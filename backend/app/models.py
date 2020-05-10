@@ -8,11 +8,12 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 
 class User(db.Model):
-    __tablename__ = "user"
+    __tablename__ = "users"
     user_id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), nullable=False)
     email = db.Column(db.String(64), unique=True, nullable=False)
     password_hash = db.Column(db.String(128))
+    shipping_addr = db.Column(db.String(128))
 
     @property
     def password(self):
@@ -59,9 +60,9 @@ class User(db.Model):
         }
 
     @staticmethod
-    def serialize_list(user):
+    def serialize_list(users):
         json_users = []
-        for user in user:
+        for user in users:
             json_users.append(user.serialize)
         return json_users
 
@@ -70,7 +71,7 @@ class User(db.Model):
 
 
 class Admin(db.Model):
-    __tablename__ = "admin"
+    __tablename__ = "admins"
     admin_id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), nullable=False)
     email = db.Column(db.String(64), unique=True, nullable=False)
@@ -121,93 +122,22 @@ class Admin(db.Model):
         }
 
     @staticmethod
-    def serialize_list(admin):
+    def serialize_list(admins):
         json_admins = []
-        for admin in admin:
-            json_items.append(admin.serialize)
+        for admin in admins:
+            json_admin.append(admin.serialize)
         return json_admins
 
     def __repr__(self):
         return "<Admin %r>" % self.email
 
-class Item(db.Model):
-    __tablename__ = "item"
-    item_id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(64), nullable=False)
-    description = db.Column(db.String(256), nullable=False)
-    photo = db.Column(db.LargeBinary, nullable=False)
-    # price in cents
-    price = db.Column(db.Integer, nullable=False)
-    date = db.Column(db.Date, nullable=False)
-    inventory_count = db.Column(db.Integer, nullable=False)
-    admin_id = db.Column(db.Integer, db.ForeignKey("admin.id"), nullable=False)
-
-    @property
-    def serialize(self):
-        """Return object data in serializeable format"""
-        return {
-            "id": self.item_id,
-            "title": self.title,
-            "description": self.description,
-            "photo": self.photo,
-            "price": self.price,
-            "date": self.date,
-            "inventory_count": inventory_count,
-            "admin_id": self.admin_id,
-        }
-
-    @staticmethod
-    def serialize_list(item):
-        json_items = []
-        for i in item:
-            json_items.append(t.serialize)
-        return json_items
-
-    def __repr__(self):
-        return "<Item%r>" % self.title
-
-        class Item(db.Model):
-    __tablename__ = "item"
-    item_id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(64), nullable=False)
-    description = db.Column(db.String(256), nullable=False)
-    photo = db.Column(db.LargeBinary, nullable=False)
-    # price in cents
-    price = db.Column(db.Integer, nullable=False)
-    date = db.Column(db.Date, nullable=False)
-    inventory_count = db.Column(db.Integer, nullable=False)
-    admin_id = db.Column(db.Integer, db.ForeignKey("admin.id"), nullable=False)
-
-    @property
-    def serialize(self):
-        """Return object data in serializeable format"""
-        return {
-            "id": self.item_id,
-            "title": self.title,
-            "description": self.description,
-            "photo": self.photo,
-            "price": self.price,
-            "date": self.date,
-            "inventory_count": inventory_count,
-            "admin_id": self.admin_id,
-        }
-
-    @staticmethod
-    def serialize_list(item):
-        json_items = []
-        for i in item:
-            json_items.append(t.serialize)
-        return json_items
-
-    def __repr__(self):
-        return "<Item%r>" % self.title
 
 class Item(db.Model):
-    __tablename__ = "item"
+    __tablename__ = "items"
     item_id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(64), nullable=False)
     description = db.Column(db.String(256), nullable=False)
-    photo = db.Column(db.LargeBinary, nullable=False)
+    photo = db.Column(db.LargeBinary)
     # price in cents
     price = db.Column(db.Integer, nullable=False)
     date = db.Column(db.Date, nullable=False)
@@ -224,23 +154,23 @@ class Item(db.Model):
             "photo": self.photo,
             "price": self.price,
             "date": self.date,
-            "inventory_count": inventory_count,
+            "inventory_count": self.inventory_count,
             "admin_id": self.admin_id,
         }
 
     @staticmethod
-    def serialize_list(item):
+    def serialize_list(items):
         json_items = []
-        for i in item:
-            json_items.append(t.serialize)
+        for i in items:
+            json_items.append(i.serialize)
         return json_items
 
     def __repr__(self):
-        return "<Item%r>" % self.title
+        return "<Item%r>" % self.item_id
 
 
 class Payment(db.Model):
-    __tablename__ = "payment"
+    __tablename__ = "payments"
     payment_id = db.Column(db.Integer, primary_key=True)
     # total amount in cents
     total_amt = db.Column(db.Integer, nullable=False)
@@ -248,28 +178,25 @@ class Payment(db.Model):
     shipping_addr = db.Column(db.String(128), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
     item_id = db.Column(db.Integer, db.ForeignKey("item.id"), nullable=False)
-    
 
     @property
     def serialize(self):
         """Return object data in serializeable format"""
         return {
-            "id": self.item_id,
-            "title": self.title,
-            "description": self.description,
-            "photo": self.photo,
-            "price": self.price,
-            "date": self.date,
-            "inventory_count": inventory_count,
-            "admin_id": self.admin_id,
+            "payment_id": self.payment_id,
+            "total_amt": self.total_amt,
+            "pdate": self.pdate,
+            "shipping_addr": self.shipping_addr,
+            "user_id": self.user_id,
+            "item_id": self.item_id,
         }
 
     @staticmethod
-    def serialize_list(item):
-        json_items = []
-        for i in item:
-            json_items.append(t.serialize)
-        return json_items
+    def serialize_list(payments):
+        json_payments = []
+        for p in payments:
+            json_payments.append(p.serialize)
+        return json_payments
 
     def __repr__(self):
-        return "<Item%r>" % self.title
+        return "<Payment%r>" % self.payment_id

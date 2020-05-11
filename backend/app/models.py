@@ -137,6 +137,7 @@ class Item(db.Model):
     item_id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(64), nullable=False)
     description = db.Column(db.String(256), nullable=False)
+    # default image should be added
     photo = db.Column(db.LargeBinary)
     # price in cents
     price = db.Column(db.Integer, nullable=False)

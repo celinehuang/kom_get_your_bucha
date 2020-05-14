@@ -129,7 +129,7 @@ class Admin(db.Model):
         return json_admins
 
     def __repr__(self):
-        return "<Admin %r>" % self.email
+        return "<Admin %r>" % self.emaila
 
 
 class Item(db.Model):
@@ -143,7 +143,7 @@ class Item(db.Model):
     price = db.Column(db.Integer, nullable=False)
     date = db.Column(db.Date, nullable=False)
     inventory_count = db.Column(db.Integer, nullable=False)
-    admin_id = db.Column(db.Integer, db.ForeignKey("admin.id"), nullable=False)
+    admin_id = db.Column(db.Integer, db.ForeignKey("admins.admin_id"), nullable=False)
 
     @property
     def serialize(self):
@@ -177,8 +177,8 @@ class Payment(db.Model):
     total_amt = db.Column(db.Integer, nullable=False)
     pdate = db.Column(db.Date, nullable=False)
     shipping_addr = db.Column(db.String(128), nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
-    item_id = db.Column(db.Integer, db.ForeignKey("item.id"), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey("users.user_id"), nullable=False)
+    item_id = db.Column(db.Integer, db.ForeignKey("items.item_id"), nullable=False)
 
     @property
     def serialize(self):

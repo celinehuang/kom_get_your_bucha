@@ -40,6 +40,10 @@ def create_app(config_name):
 
     app.register_blueprint(users_blueprint, url_prefix="/users")
 
+    from .admins import admins as admins_blueprint
+
+    app.register_blueprint(admins_blueprint, url_prefix="/admins")
+
     from .items import items as items_blueprint
 
     app.register_blueprint(items_blueprint, url_prefix="/items")

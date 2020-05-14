@@ -2,7 +2,7 @@ import datetime
 from flask import Flask, jsonify, request, abort, make_response
 from . import auth
 from .. import db, http_auth
-from app.models import User
+from app.models import User, Admin
 
 # log in an existing user
 @auth.route("/login", methods=["POST"])
@@ -69,6 +69,33 @@ def register():
     db.session.add(new_user)
     db.session.commit()
     return jsonify(new_user.serialize)
+
+
+# register an admim
+@auth.route("/register-admin", methods=["POST"])
+def register_admin():
+    """
+    Required in body:
+    name: String
+    email: String
+    password: String
+    """
+    data = request.get_json(force=True)
+    name = data.get("name")
+    email = data.get("email")
+    password = data.get("password")
+
+    if name == "" or email == "" or password == "":
+        abort(400, "Cannot have empty fields for user")
+
+    admin = Admin.query.filter_by(email=email).first()
+    if admin is not None:
+        abort(400, "Account already exists with this email")
+
+    new_admin = Admin(name=name, email=email, password=password)
+    db.session.add(new_admin)
+    db.session.commit()
+    return jsonify(new_admin.serialize)
 
 
 # log out an existing user

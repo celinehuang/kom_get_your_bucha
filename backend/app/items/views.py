@@ -5,7 +5,7 @@ from werkzeug.utils import secure_filename
 from sqlalchemy import extract
 from . import items
 from .. import db, http_auth
-from app.models import User, Item, Payment
+from app.models import User, Item, Payment, Admin
 
 UPLOAD_FOLDER = "./item-images"
 ALLOWED_EXTENSIONS = {"pdf", "png", "jpg", "jpeg", "gif"}

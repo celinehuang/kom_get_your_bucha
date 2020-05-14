@@ -16,9 +16,9 @@ def get_all_users():
 
 # get user by ID
 @users.route("/<int:user_id>", methods=["GET"])
-@http_auth.login_required
+# @http_auth.login_required
 def get_user_by_id(user_id):
-    user = User.query.filter_by(id=user_id).first()
+    user = User.query.filter_by(user_id=user_id).first()
     if user is None:
         abort(404, "No user found with specified ID")
     return jsonify(user.serialize)
@@ -26,7 +26,7 @@ def get_user_by_id(user_id):
 
 # get user by email
 @users.route("/<email>", methods=["GET"])
-@http_auth.login_required
+# @http_auth.login_required
 def get_user_by_email(email):
     user = User.query.filter_by(email=email).first()
     if user is None:
@@ -37,7 +37,7 @@ def get_user_by_email(email):
 # update a user's profile
 # TODO: allow users to change password
 @users.route("/<int:user_id>/profile", methods=["PUT"])
-@http_auth.login_required
+# @http_auth.login_required
 def update_user_settings(user_id):
     data = request.get_json(force=True)
 

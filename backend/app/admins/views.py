@@ -8,7 +8,7 @@ from app.models import Admin
 
 
 # get all admins
-@users.route("", methods=["GET"])
+@admins.route("", methods=["GET"])
 @http_auth.login_required
 def get_all_admins():
     admins = Admin.query.all()
@@ -16,7 +16,7 @@ def get_all_admins():
 
 
 # get admin by ID
-@users.route("/<int:admin_id>", methods=["GET"])
+@admins.route("/<int:admin_id>", methods=["GET"])
 # @http_auth.login_required
 def get_admin_by_id(admin_id):
     admin = Admin.query.filter_by(admin_id=admin_id).first()

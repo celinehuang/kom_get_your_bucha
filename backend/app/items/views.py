@@ -27,38 +27,40 @@ def create_item():
     data = request.get_json(force=True)
     title = data.get("title")
     description = data.get("description")
-    email = data.get("email")
+    # email = data.get("email")
     # photo = data.get("photo")
-    iventory_count = int(data.get("inventory_count"))
+    admin_id = data.get("admin_id")
+    inventory_count = int(data.get("inventory_count"))
     price = int(data.get("price"))
     date = datetime.now()
+
+    admin = Admin.query.filter_by(admin_id=admin_id).first()
+    if admin is None:
+        abort(404, "No admin found with specified ID")
 
     if (
         title == ""
         or description == ""
-        or email == ""
+        # or email == ""
         # or photo is None
-        or iventory_count == ""
+        or inventory_count == ""
         or price is None
         or date is None
     ):
         abort(400, "Cannot have empty fields for item")
 
-    admin = Admin.query.filter_by(email=email).first()
-    if admin is None:
-        abort(404, "Admin does not exist")
-
     new_item = Item(
         title=title,
         description=description,
-        iventory_count=iventory_count,
+        inventory_count=inventory_count,
         price=price,
         date=date,
-        admin_id=admin.id,
+        admin_id=admin.admin_id,
     )
 
     db.session.add(new_item)
     db.session.commit()
+    return jsonify(new_item.serialize)
 
 
 def allowed_file(filename):
@@ -67,7 +69,7 @@ def allowed_file(filename):
 
 # upload item image (called inside of the create_item POST request)
 @items.route("/upload-item-image", methods=["POST"])
-@http_auth.login_required
+# @http_auth.login_required
 def add_item_image():
     if "file" not in request.files:
         abort(400, "No file sent in request!")

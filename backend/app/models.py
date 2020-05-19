@@ -28,7 +28,7 @@ class User(db.Model):
 
     def generate_auth_token(self, expiration=86400):
         s = Serializer(current_app.config["SECRET_KEY"], expiration)
-        return s.dumps({"token": self.id})
+        return s.dumps({"token": self.user_id})
 
     @staticmethod
     @http_auth.verify_token
@@ -53,7 +53,7 @@ class User(db.Model):
     def serialize(self):
         """Return object data in serializeable format"""
         return {
-            "id": self.user_id,
+            "user_id": self.user_id,
             "name": self.name,
             "password_hash": self.password_hash,
             "email": self.email,
@@ -135,7 +135,10 @@ class Admin(db.Model):
 class Item(db.Model):
     __tablename__ = "items"
     item_id = db.Column(db.Integer, primary_key=True)
+    # classic, limited, alcoholic, equipment
+    item_type = db.Column(db.String(64), nullable=False)
     title = db.Column(db.String(64), nullable=False)
+    # ingredient list
     description = db.Column(db.String(256), nullable=False)
     # default image should be added
     photo = db.Column(db.LargeBinary)
@@ -150,6 +153,7 @@ class Item(db.Model):
         """Return object data in serializeable format"""
         return {
             "id": self.item_id,
+            "item_type": self.item_type,
             "title": self.title,
             "description": self.description,
             "photo": self.photo,

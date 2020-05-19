@@ -8,7 +8,7 @@ from app.models import User
 
 # get all users
 @users.route("", methods=["GET"])
-@http_auth.login_required
+# @http_auth.login_required
 def get_all_users():
     users = User.query.all()
     return jsonify(User.serialize_list(users))

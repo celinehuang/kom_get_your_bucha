@@ -13,8 +13,8 @@ ALLOWED_EXTENSIONS = {"pdf", "png", "jpg", "jpeg", "gif"}
 # app.config["MAX_CONTENT_LENGTH"] = 50 * 1024 * 1024
 
 # get all items
-@items.route("/get-items", methods=["GET"])
-@http_auth.login_required
+@items.route("/items", methods=["GET"])
+# @http_auth.login_required
 def get_items():
     items = Item.query.all()
     return jsonify(Item.serialize_list(items))
@@ -27,6 +27,7 @@ def create_item():
     data = request.get_json(force=True)
     title = data.get("title")
     description = data.get("description")
+    item_type = data.get("item_type")
     # email = data.get("email")
     # photo = data.get("photo")
     admin_id = data.get("admin_id")
@@ -43,6 +44,7 @@ def create_item():
         or description == ""
         # or email == ""
         # or photo is None
+        or item_type == ""
         or inventory_count == ""
         or price is None
         or date is None
@@ -52,6 +54,7 @@ def create_item():
     new_item = Item(
         title=title,
         description=description,
+        item_type=item_type,
         inventory_count=inventory_count,
         price=price,
         date=date,

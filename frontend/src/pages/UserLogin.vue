@@ -12,15 +12,7 @@
         >KOM GET YOUR&#10;BUCHA</q-toolbar-title>
       </div>
     </q-toolbar>
-    <div class="q-pb-md" style="max-width: 800px">
-      <q-btn
-        class="float-right"
-        icon-right="keyboard_arrow_right"
-        flat
-        label="Admin Login"
-        to="/admin"
-      />
-    </div>
+
     <div class="center q-pa-md q-gutter-y-md" style="max-width: 500px">
       <q-card>
         <q-tabs
@@ -101,20 +93,6 @@
                 ]"
               />
 
-              <!-- <q-input
-                filled
-                v-model="confirm_password"
-                label="Confirm Password"
-                type="password"
-                lazy-rules
-                :rules="[
-                  val =>
-                    (val !== null && val !== '') ||
-                    'Please confirm your password',
-                  val => val === password || 'Passwords do not match'
-                ]"
-              />-->
-
               <div>
                 <q-btn
                   label="Sign Up"
@@ -127,6 +105,15 @@
           </q-tab-panel>
         </q-tab-panels>
       </q-card>
+    </div>
+    <div class="q-pt-lx" style="max-width: 900px">
+      <q-btn
+        class="float-right"
+        icon-right="keyboard_arrow_right"
+        flat
+        label="Admin Login"
+        to="/admin"
+      />
     </div>
   </q-layout>
 </template>

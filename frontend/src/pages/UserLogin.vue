@@ -9,8 +9,7 @@
           class="q-pb-lg"
           style="font-size: 30px; white-space: pre-wrap;"
           :ripple="false"
-          >KOM GET YOUR&#10;BUCHA</q-toolbar-title
-        >
+        >KOM GET YOUR&#10;BUCHA</q-toolbar-title>
       </div>
     </q-toolbar>
 
@@ -57,12 +56,7 @@
               />
 
               <div>
-                <q-btn
-                  label="Log In"
-                  type="submit"
-                  class="text-black"
-                  style="background:#f3e5cf;"
-                />
+                <q-btn label="Log In" type="submit" class="text-black" style="background:#f3e5cf;" />
               </div>
             </q-form>
           </q-tab-panel>
@@ -111,7 +105,7 @@
                     'Please confirm your password',
                   val => val === password || 'Passwords do not match'
                 ]"
-              /> -->
+              />-->
 
               <div>
                 <q-btn

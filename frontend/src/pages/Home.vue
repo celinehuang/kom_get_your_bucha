@@ -18,22 +18,23 @@
     </div>
     <div class="row">
       <img class="col-6" src="../assets/ferment-kom.jpg" />
-      <div class="col-6 center text-h4" style="letter-spacing:2px">
-        Made by natural carbonation and fresh ingredients – find more
-        information about kombucha
+      <div class="col-6 center text-h4 q-pa-xl" style="letter-spacing:2px">
+        Made by natural carbonation and fresh ingredients – learn more about
+        kombucha in
         <a
           href="https://www.nytimes.com/2019/10/16/style/self-care/kombucha-benefits.html"
           style="color:#df8977"
           target="_blank"
-          >here</a
+          >this</a
         >
+        article!
       </div>
     </div>
     <div class="row">
       <img class="col-6" src="../assets/strawberry.jpg" />
       <img class="col-6" src="../assets/blueberry.jpg" />
     </div>
-    <div class="row q-mb-xl">
+    <div class="row">
       <div class="col-6 center text-h4" style="letter-spacing:2px">
         Help support us to go to Nationals!
       </div>

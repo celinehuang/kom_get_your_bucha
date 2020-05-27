@@ -81,7 +81,7 @@ const Store = new Vuex.Store({
             const token = resp.data.token;
             const user = resp.data.user;
             localStorage.setItem("token", token);
-
+            axios.defaults.headers.common["Authorization"] = token;
             commit("auth_success", { token, user });
             resolve(resp);
           })
@@ -105,6 +105,7 @@ const Store = new Vuex.Store({
             const user = resp.data.user;
             localStorage.setItem("token", token);
 
+            axios.defaults.headers.common["Authorization"] = token;
             commit("auth_success", { token, user });
             resolve(resp);
           })
@@ -154,6 +155,9 @@ const Store = new Vuex.Store({
   // },
   // enable strict mode (adds overhead!)
   // for dev mode only
+  modules: {
+    // example
+  },
   strict: process.env.DEV
 });
 

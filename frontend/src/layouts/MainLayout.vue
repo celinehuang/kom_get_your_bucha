@@ -16,7 +16,9 @@
             </template>
           </q-input>
         </form>
-        <q-btn flat dense icon="shopping_cart" class="q-px-sm" to="/cart">( {{numItems}} )</q-btn>
+        <q-btn flat dense icon="shopping_cart" class="q-px-sm" to="/cart"
+          >( {{ numItems }} )</q-btn
+        >
         <q-btn flat dense class="q-pa-sm" to="/login">LOG IN</q-btn>
       </q-toolbar>
       <q-toolbar>
@@ -25,11 +27,17 @@
             style="font-size: 40px; white-space: pre-wrap;"
             :ripple="false"
             to="/home"
-          >KOM GET YOUR&#10;BUCHA</q-btn>
+            >KOM GET YOUR&#10;BUCHA</q-btn
+          >
         </div>
       </q-toolbar>
       <div class="center q-py-sm">
-        <q-btn-dropdown :ripple="false" flat label="SHOP ONLINE" style="font-size: 18px; width:30%">
+        <q-btn-dropdown
+          :ripple="false"
+          flat
+          label="SHOP ONLINE"
+          style="font-size: 18px; width:30%"
+        >
           <q-list>
             <q-item>
               <q-btn
@@ -37,7 +45,8 @@
                 flat
                 class="q-pt-sm full-width"
                 to="/classic-kombucha"
-              >Classic Flavours</q-btn>
+                >Classic Flavours</q-btn
+              >
             </q-item>
             <q-item>
               <q-btn
@@ -45,7 +54,8 @@
                 flat
                 class="q-pt-sm full-width"
                 to="/limited-edition"
-              >Limited Edition Flavours</q-btn>
+                >Limited Edition Flavours</q-btn
+              >
             </q-item>
             <q-item>
               <q-btn
@@ -53,17 +63,36 @@
                 flat
                 class="q-pt-sm full-width"
                 to="/alcoholic"
-              >Alcoholic Kombucha</q-btn>
+                >Alcoholic Kombucha</q-btn
+              >
             </q-item>
             <q-item>
-              <q-btn :ripple="false" flat class="q-pt-sm full-width" to="/equipment">Equipment</q-btn>
+              <q-btn
+                :ripple="false"
+                flat
+                class="q-pt-sm full-width"
+                to="/equipment"
+                >Equipment</q-btn
+              >
             </q-item>
             <q-item>
-              <q-btn :ripple="false" flat class="q-pt-sm full-width" to="/all-products">All Products</q-btn>
+              <q-btn
+                :ripple="false"
+                flat
+                class="q-pt-sm full-width"
+                to="/all-products"
+                >All Products</q-btn
+              >
             </q-item>
           </q-list>
         </q-btn-dropdown>
-        <q-btn :ripple="false" flat label="RECIPES" style="font-size:18px; width:30%" to="/recipes"></q-btn>
+        <q-btn
+          :ripple="false"
+          flat
+          label="RECIPES"
+          style="font-size:18px; width:30%"
+          to="/recipes"
+        ></q-btn>
         <q-btn-dropdown
           :ripple="false"
           stretch
@@ -73,16 +102,71 @@
         >
           <q-list>
             <q-item>
-              <q-btn :ripple="false" flat class="q-pt-sm full-width" to="/story">Story</q-btn>
+              <q-btn :ripple="false" flat class="q-pt-sm full-width" to="/story"
+                >Story</q-btn
+              >
             </q-item>
             <q-item>
-              <q-btn :ripple="false" flat class="q-pt-sm full-width" to="/contact">Contact</q-btn>
+              <q-btn
+                :ripple="false"
+                flat
+                class="q-pt-sm full-width"
+                to="/contact"
+                >Contact</q-btn
+              >
             </q-item>
           </q-list>
         </q-btn-dropdown>
         <!-- <q-btn flat label="BLOG" style="font-size: 18px;"></q-btn> -->
       </div>
     </q-header>
+
+    <q-footer elevated class="bg-black q-pa-lg" style="position:absolute"
+      ><div class="row">
+        <div class="col-4">
+          <div class="q-pa-sm center">
+            <q-btn
+              type="a"
+              href="https://www.facebook.com/venusultimatemtl/"
+              target="_blank"
+              icon="fab fa-facebook-f"
+            />
+          </div>
+        </div>
+        <div class="col-3"><q-btn class="center" label="Where To Buy" /></div>
+        <div class="col-4 q-px-md">
+          We are part of the organization Club Ultimate Féminin Montréal (CUFM)
+          <div class="q-py-xs">
+            Check them out
+            <a
+              href="http://ultimatefemininmontreal.com/"
+              style="color:#df8977"
+              target="_blank"
+              >here</a
+            >
+          </div>
+          Follow them on Facebook
+          <a
+            href="https://www.facebook.com/cuvmontreal"
+            style="color:#df8977"
+            target="_blank"
+            >here</a
+          >
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-4">
+          <div class="center">
+            <q-btn
+              type="a"
+              href="https://instagram.com/venus_ultimate?igshid=1crngymo1chph"
+              target="_blank"
+              icon="fab fa-instagram"
+            />
+          </div>
+        </div>
+      </div>
+    </q-footer>
 
     <q-page-container>
       <router-view />

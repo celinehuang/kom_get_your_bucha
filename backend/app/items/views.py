@@ -13,10 +13,17 @@ ALLOWED_EXTENSIONS = {"pdf", "png", "jpg", "jpeg", "gif"}
 # app.config["MAX_CONTENT_LENGTH"] = 50 * 1024 * 1024
 
 # get all items
-@items.route("/items", methods=["GET"])
+@items.route("", methods=["GET"])
 # @http_auth.login_required
 def get_items():
     items = Item.query.all()
+    return jsonify(Item.serialize_list(items))
+
+
+@items.route("/limited", methods=["GET"])
+# @http_auth.login_required
+def get_limited_items():
+    items = Item.query.filter_by(item_type="limited")
     return jsonify(Item.serialize_list(items))
 
 

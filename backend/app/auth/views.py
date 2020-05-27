@@ -98,6 +98,29 @@ def register_admin():
     return jsonify(new_admin.serialize)
 
 
+# admin login
+@auth.route("/admin-login", methods=["POST"])
+def admin_login():
+    """
+    Required in body:
+    email: String
+    password: String
+    """
+    data = request.get_json(force=True)
+    email = data.get("email")
+    password = data.get("password")
+
+    admin = Admin.query.filter_by(email=email).first()
+    if (
+        admin is not None
+        and admin.password_hash is not None
+        and admin.verify_password(password)
+    ):
+        token = admin.generate_auth_token()
+        return jsonify({"admin": admin.serialize, "token": token.decode("ascii")})
+    return "Wrong email or password!", 400
+
+
 # log out an existing user
 @auth.route("/logout")
 @http_auth.login_required

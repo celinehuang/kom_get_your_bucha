@@ -92,6 +92,28 @@ const Store = new Vuex.Store({
           });
       });
     },
+    adminLogin({ commit }, admin) {
+      return new Promise((resolve, reject) => {
+        commit("auth_request");
+        AXIOS.post("/auth/admin-login", {
+          email: admin.email,
+          password: admin.password
+        })
+          .then(resp => {
+            const token = resp.data.token;
+            const admin = resp.data.admin;
+            localStorage.setItem("token", token);
+            axios.defaults.headers.common["Authorization"] = token;
+            commit("auth_success", { token, admin });
+            resolve(resp);
+          })
+          .catch(err => {
+            commit("auth_error");
+            localStorage.removeItem("token");
+            reject(err);
+          });
+      });
+    },
     register({ commit }, user) {
       return new Promise((resolve, reject) => {
         commit("auth_request");

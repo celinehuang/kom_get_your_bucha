@@ -14,16 +14,32 @@ ALLOWED_EXTENSIONS = {"pdf", "png", "jpg", "jpeg", "gif"}
 
 # get all items
 @items.route("", methods=["GET"])
-# @http_auth.login_required
 def get_items():
     items = Item.query.all()
     return jsonify(Item.serialize_list(items))
 
 
+@items.route("/classic", methods=["GET"])
+def get_classic_items():
+    items = Item.query.filter_by(item_type="classic")
+    return jsonify(Item.serialize_list(items))
+
+
 @items.route("/limited", methods=["GET"])
-# @http_auth.login_required
 def get_limited_items():
     items = Item.query.filter_by(item_type="limited")
+    return jsonify(Item.serialize_list(items))
+
+
+@items.route("/alcoholic", methods=["GET"])
+def get_alcoholic_items():
+    items = Item.query.filter_by(item_type="alcoholic")
+    return jsonify(Item.serialize_list(items))
+
+
+@items.route("/equipment", methods=["GET"])
+def get_equipment_items():
+    items = Item.query.filter_by(item_type="equipment")
     return jsonify(Item.serialize_list(items))
 
 
@@ -75,6 +91,20 @@ def create_item():
 
 def allowed_file(filename):
     return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
+
+
+# delete items (admin only)
+@items.route("/<int:id>", methods=["DELETE"])
+# @http_auth.login_required
+def delete_item(id):
+    t = Item.query.filter_by(item_id=id).first()
+    if t is None:
+        abort(404, "No item found with specified ID")
+
+    db.session.delete(t)
+    db.session.commit()
+
+    return jsonify(t.serialize)
 
 
 # upload item image (called inside of the create_item POST request)

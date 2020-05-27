@@ -12,7 +12,15 @@
         >KOM GET YOUR&#10;BUCHA</q-toolbar-title>
       </div>
     </q-toolbar>
-
+    <div class="q-pb-md" style="max-width: 800px">
+      <q-btn
+        class="float-right"
+        icon-right="keyboard_arrow_right"
+        flat
+        label="Admin Login"
+        to="/admin"
+      />
+    </div>
     <div class="center q-pa-md q-gutter-y-md" style="max-width: 500px">
       <q-card>
         <q-tabs

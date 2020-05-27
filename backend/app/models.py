@@ -90,7 +90,7 @@ class Admin(db.Model):
 
     def generate_auth_token(self, expiration=86400):
         s = Serializer(current_app.config["SECRET_KEY"], expiration)
-        return s.dumps({"token": self.id})
+        return s.dumps({"token": self.admin_id})
 
     @staticmethod
     @http_auth.verify_token
@@ -102,7 +102,7 @@ class Admin(db.Model):
             return False  # valid token, but expired
         except BadSignature:
             return False  # invalid token
-        return User.query.get(data["token"])
+        return Admin.query.get(data["token"])
 
     # @staticmethod
     # def generate_test_user():
@@ -115,7 +115,7 @@ class Admin(db.Model):
     def serialize(self):
         """Return object data in serializeable format"""
         return {
-            "id": self.admin_id,
+            "admin_id": self.admin_id,
             "name": self.name,
             "password_hash": self.password_hash,
             "email": self.email,
@@ -125,7 +125,7 @@ class Admin(db.Model):
     def serialize_list(admins):
         json_admins = []
         for admin in admins:
-            json_admin.append(admin.serialize)
+            json_admins.append(admin.serialize)
         return json_admins
 
     def __repr__(self):

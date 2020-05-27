@@ -9,7 +9,7 @@ from app.models import Admin
 
 # get all admins
 @admins.route("", methods=["GET"])
-@http_auth.login_required
+# @http_auth.login_required
 def get_all_admins():
     admins = Admin.query.all()
     return jsonify(Admin.serialize_list(admins))

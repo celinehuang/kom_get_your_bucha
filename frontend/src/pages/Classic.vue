@@ -32,15 +32,13 @@ export default {
   methods: {
     getItems() {
       this.$axios
-        .get("http://localhost:5000/items")
+        .get("http://localhost:5000/items/classic")
         .then(response => {
           const data = response.data;
           this.items = [];
           Object.keys(data).forEach(key => {
-            if (
-              data[key].inventory_count > 0 &&
-              data[key].item_type == "classic"
-            ) {
+            console.log(data[key].item_type);
+            if (data[key].inventory_count > 0) {
               this.items[key] = data[key];
             }
             this.items[key];

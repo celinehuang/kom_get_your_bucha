@@ -68,16 +68,6 @@
   width: 100%;
   max-width: 100%;
 }
-.text-pos-3 {
-  text-align: center;
-  position: absolute;
-  top: 20%;
-  left: 0;
-  transform: translate3d(0, -50%, 0);
-  z-index: 7;
-  width: 100%;
-  max-width: 100%;
-}
 .custom-font {
   font: "customfont";
 }

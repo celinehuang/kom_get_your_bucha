@@ -16,10 +16,24 @@
             </template>
           </q-input>
         </form>
-        <q-btn flat dense icon="shopping_cart" class="q-px-sm" to="/cart"
-          >( {{ numItems }} )</q-btn
-        >
-        <q-btn flat dense class="q-pa-sm" to="/login">LOG IN</q-btn>
+        <ShoppingCart />
+        <!-- <q-btn flat dense icon="shopping_cart" class="q-px-sm" to="/cart">( {{ numItems }} )</q-btn> -->
+        <div v-if="userExists ===  false">
+          <q-btn flat dense class="q-pa-sm" to="/login">LOG IN</q-btn>
+        </div>
+        <div v-else>
+          <span>Hi, {{name}}</span>
+          <q-btn-dropdown flat dense class="q-pa-sm" label>
+            <q-list>
+              <q-item>
+                <q-btn label="Log Out" flat @click="logout" />
+              </q-item>
+              <q-item>
+                <q-btn label="View Profile" flat to="/profile" />
+              </q-item>
+            </q-list>
+          </q-btn-dropdown>
+        </div>
       </q-toolbar>
       <q-toolbar>
         <div class="center title-font text-weight-medium">
@@ -27,17 +41,11 @@
             style="font-size: 40px; white-space: pre-wrap;"
             :ripple="false"
             to="/home"
-            >KOM GET YOUR&#10;BUCHA</q-btn
-          >
+          >KOM GET YOUR&#10;BUCHA</q-btn>
         </div>
       </q-toolbar>
       <div class="center q-py-sm">
-        <q-btn-dropdown
-          :ripple="false"
-          flat
-          label="SHOP ONLINE"
-          style="font-size: 18px; width:30%"
-        >
+        <q-btn-dropdown :ripple="false" flat label="SHOP ONLINE" style="font-size: 18px; width:30%">
           <q-list>
             <q-item>
               <q-btn
@@ -45,8 +53,7 @@
                 flat
                 class="q-pt-sm full-width"
                 to="/classic-kombucha"
-                >Classic Flavours</q-btn
-              >
+              >Classic Flavours</q-btn>
             </q-item>
             <q-item>
               <q-btn
@@ -54,8 +61,7 @@
                 flat
                 class="q-pt-sm full-width"
                 to="/limited-edition"
-                >Limited Edition Flavours</q-btn
-              >
+              >Limited Edition Flavours</q-btn>
             </q-item>
             <q-item>
               <q-btn
@@ -63,36 +69,17 @@
                 flat
                 class="q-pt-sm full-width"
                 to="/alcoholic"
-                >Alcoholic Kombucha</q-btn
-              >
+              >Alcoholic Kombucha</q-btn>
             </q-item>
             <q-item>
-              <q-btn
-                :ripple="false"
-                flat
-                class="q-pt-sm full-width"
-                to="/equipment"
-                >Equipment</q-btn
-              >
+              <q-btn :ripple="false" flat class="q-pt-sm full-width" to="/equipment">Equipment</q-btn>
             </q-item>
             <q-item>
-              <q-btn
-                :ripple="false"
-                flat
-                class="q-pt-sm full-width"
-                to="/all-products"
-                >All Products</q-btn
-              >
+              <q-btn :ripple="false" flat class="q-pt-sm full-width" to="/all-products">All Products</q-btn>
             </q-item>
           </q-list>
         </q-btn-dropdown>
-        <q-btn
-          :ripple="false"
-          flat
-          label="RECIPES"
-          style="font-size:18px; width:30%"
-          to="/recipes"
-        ></q-btn>
+        <q-btn :ripple="false" flat label="RECIPES" style="font-size:18px; width:30%" to="/recipes"></q-btn>
         <q-btn-dropdown
           :ripple="false"
           stretch
@@ -102,18 +89,10 @@
         >
           <q-list>
             <q-item>
-              <q-btn :ripple="false" flat class="q-pt-sm full-width" to="/story"
-                >Story</q-btn
-              >
+              <q-btn :ripple="false" flat class="q-pt-sm full-width" to="/story">Story</q-btn>
             </q-item>
             <q-item>
-              <q-btn
-                :ripple="false"
-                flat
-                class="q-pt-sm full-width"
-                to="/contact"
-                >Contact</q-btn
-              >
+              <q-btn :ripple="false" flat class="q-pt-sm full-width" to="/contact">Contact</q-btn>
             </q-item>
           </q-list>
         </q-btn-dropdown>
@@ -121,8 +100,8 @@
       </div>
     </q-header>
 
-    <q-footer elevated class="bg-black q-pa-lg" style="position:absolute"
-      ><div class="row">
+    <q-footer elevated class="bg-black q-pa-lg" style="position:absolute">
+      <div class="row">
         <div class="col-4">
           <div class="q-pa-sm center">
             <q-btn
@@ -133,7 +112,9 @@
             />
           </div>
         </div>
-        <div class="col-3"><q-btn class="center" label="Where To Buy" /></div>
+        <div class="col-3">
+          <q-btn class="center" label="Where To Buy" />
+        </div>
         <div class="col-4 q-px-md">
           We are part of the organization Club Ultimate Féminin Montréal (CUFM)
           <div class="q-py-xs">
@@ -142,16 +123,13 @@
               href="http://ultimatefemininmontreal.com/"
               style="color:#df8977"
               target="_blank"
-              >here</a
-            >
-          </div>
-          Follow them on Facebook
+            >here</a>
+          </div>Follow them on Facebook
           <a
             href="https://www.facebook.com/cuvmontreal"
             style="color:#df8977"
             target="_blank"
-            >here</a
-          >
+          >here</a>
         </div>
       </div>
       <div class="row">
@@ -175,19 +153,29 @@
 </template>
 
 <script>
+import ShoppingCart from "../components/ShoppingCart.vue";
 export default {
   name: "MainLayout",
 
-  components: {},
+  components: { ShoppingCart },
 
   data() {
     return {
       searchText: null,
-      numItems: 0
+      numItems: 0,
+      // username: this.$store.state.currentUser.username,
+      name: this.$store.state.currentUser.name,
+      userExists: this.$store.state.userExists
     };
   },
   methods: {
-    onSearch() {}
+    onSearch() {},
+    inCart() {
+      return this.$store.getters.inCart;
+    },
+    logout: function() {
+      this.$store.dispatch("logout").then(this.$router.push({ path: "login" }));
+    }
   }
 };
 </script>
@@ -200,5 +188,8 @@ export default {
 }
 .title-font {
   font-family: "customfont";
+}
+.cart {
+  display: inline-block;
 }
 </style>

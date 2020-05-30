@@ -33,8 +33,8 @@ const Store = new Vuex.Store({
   },
   getters: {
     isLoggedIn: state => !!state.token,
-    authStatus: state => state.status
-    // inCart: state => state.inCart
+    authStatus: state => state.status,
+    inCart: state => state.inCart
   },
   mutations: {
     auth_request(state) {
@@ -58,16 +58,16 @@ const Store = new Vuex.Store({
     set_user(state, user) {
       state.currentUser = user;
       state.userExists = true;
+    },
+    add_to_cart(state, item) {
+      state.inCart.push(item);
+    },
+    remove_from_cart(state, index) {
+      state.inCart.splice(index, 1);
+    },
+    empty_cart(state) {
+      state.inCart = [];
     }
-    // add_to_cart(state, item) {
-    //   state.inCart.push(item);
-    // },
-    // remove_from_cart(state, index) {
-    //   state.inCart.splice(index, 1);
-    // },
-    // empty_cart(state) {
-    //   state.inCart = [];
-    // }
   },
   actions: {
     login({ commit }, user) {
@@ -145,36 +145,17 @@ const Store = new Vuex.Store({
         delete axios.defaults.headers.common["Authorization"];
         resolve();
       });
+    },
+    addToCart({ commit }, item) {
+      commit("add_to_cart", item);
+    },
+    removeFromCart({ commit }, index) {
+      commit("remove_from_cart", index);
+    },
+    emptyCart({ commit }) {
+      commit("empty_cart");
     }
-    // addToCart({ commit }, item) {
-    //   commit("add_to_cart", item);
-    // },
-    // removeFromCart({ commit }, index) {
-    //   commit("remove_from_cart", index);
-    // },
-    // emptyCart({ commit }) {
-    //   commit("empty_cart");
-    // }
   },
-  // refreshLoggedInUser({ commit }) {
-  //   return new Promise((resolve, reject) => {
-  //     const token = Store.state.token;
-  //     AXIOS.get("/api/rest-auth/user/", {
-  //       headers: {
-  //         Authorization: `Token ${token}`
-  //       }
-  //     })
-  //       .then(resp => {
-  //         commit("set_user", resp.data);
-  //         resolve(resp);
-  //       })
-  //       .catch(e => {
-  //         // token is invalid
-  //         dispatch("logout");
-  //         reject(e);
-  //       });
-  //   });
-  // },
   // enable strict mode (adds overhead!)
   // for dev mode only
   modules: {

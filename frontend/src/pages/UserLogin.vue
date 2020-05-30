@@ -65,20 +65,20 @@
             <q-form @submit="onSignUp" class="q-gutter-md">
               <q-input
                 filled
-                v-model="email"
-                label="Email"
-                lazy-rules
-                :rules="[
-                  val => (val && val.length > 0) || 'Please enter your email'
-                ]"
-              />
-              <q-input
-                filled
                 v-model="name"
                 label="Name"
                 lazy-rules
                 :rules="[
                   val => (val && val.length > 0) || 'Please enter your name'
+                ]"
+              />
+              <q-input
+                filled
+                v-model="email"
+                label="Email"
+                lazy-rules
+                :rules="[
+                  val => (val && val.length > 0) || 'Please enter your email'
                 ]"
               />
               <q-input
@@ -106,14 +106,16 @@
         </q-tab-panels>
       </q-card>
     </div>
-    <div class="q-pt-lx" style="max-width: 900px">
-      <q-btn
-        class="float-right"
-        icon-right="keyboard_arrow_right"
-        flat
-        label="Admin Login"
-        to="/admin"
-      />
+    <div class="row">
+      <div class="q-pt-xl col-8">
+        <q-btn
+          class="float-right"
+          icon-right="keyboard_arrow_right"
+          flat
+          label="Admin Login"
+          to="/admin"
+        />
+      </div>
     </div>
   </q-layout>
 </template>

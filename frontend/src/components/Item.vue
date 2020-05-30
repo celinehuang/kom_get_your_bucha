@@ -11,18 +11,17 @@
       </q-card-section>
 
       <q-card-actions>
-        <!-- <q-btn flat color="primary" icon="chat" to="/messages" />
-        <q-btn flat color="primary" icon="add_shopping_cart" @click="addToCart(item)" />
-        <q-btn flat color="primary" label="Buy Now" @click="addToCart(item)" to="/checkout" />-->
-        <!-- <q-space /> -->
+        <!-- <q-btn flat color="primary" label="Buy Now" @click="addToCart(item)" to="/checkout" /> -->
+
         <q-btn
-          color="primary"
           round
           flat
           dense
           :icon="expanded ? 'keyboard_arrow_up' : 'keyboard_arrow_down'"
           @click="expanded = !expanded"
         />
+        <q-space />
+        <q-btn flat icon="add_shopping_cart" @click="addToCart(item)" />
       </q-card-actions>
 
       <q-slide-transition>
@@ -44,9 +43,9 @@ export default {
   },
   props: ["item", "id", "description", "price", "photo", "title"],
   methods: {
-    // addToCart(item) {
-    //   this.$store.dispatch("addToCart", item);
-    // }
+    addToCart(item) {
+      this.$store.dispatch("addToCart", item);
+    }
   },
   filters: {
     formatPrice: function(value) {
@@ -57,15 +56,15 @@ export default {
 </script>
 <style lang="sass" scoped>
 .my-card
-    width: 100%
-    max-width: 350px
+  width: 100%
+  max-width: 350px
 .price-caption
-    position: absolute
-    bottom: 10px
-    left: 10px
-    background-color: black
-    border-radius: 5px
-    height: auto
-    width: auto
-    padding: 5px
+  position: absolute
+  bottom: 10px
+  left: 10px
+  background-color: black
+  border-radius: 5px
+  height: auto
+  width: auto
+  padding: 5px
 </style>

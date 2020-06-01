@@ -1,6 +1,8 @@
 <template>
   <div class="cart">
-    <q-btn flat icon="shopping_cart" @click="cartExpanded = true">{{inCart.length}}</q-btn>
+    <q-btn flat icon="shopping_cart" @click="cartExpanded = true"
+      >( {{ inCart.length }} )</q-btn
+    >
 
     <q-dialog v-model="cartExpanded">
       <q-card class="cart-cards">
@@ -11,7 +13,11 @@
 
         <q-card-section>
           <q-list style="min-width: 350px">
-            <q-item class="list-items" v-for="(item, index) in inCart" v-bind:key="item.id">
+            <q-item
+              class="list-items"
+              v-for="(item, index) in inCart"
+              v-bind:key="item.id"
+            >
               <q-item-section>
                 <!-- <q-avatar rounded>
                   <img v-bind:src="item.photo" />
@@ -19,13 +25,17 @@
               </q-item-section>
 
               <q-item-section>
-                <q-item-label lines="1">{{item.title}}</q-item-label>
+                <q-item-label lines="1">{{ item.title }}</q-item-label>
                 <!-- <q-item-label caption>{{item.artist}}</q-item-label> -->
               </q-item-section>
-              <q-item-section>{{item.price | formatPrice}}</q-item-section>
+              <q-item-section>{{ item.price | formatPrice }}</q-item-section>
 
               <q-item-section>
-                <q-btn flat icon="delete" @click="removeFromCart(index)"></q-btn>
+                <q-btn
+                  flat
+                  icon="delete"
+                  @click="removeFromCart(index)"
+                ></q-btn>
               </q-item-section>
             </q-item>
           </q-list>
@@ -33,7 +43,9 @@
 
         <div v-if="inCart.length > 0">
           <q-card-section align="right">
-            <div class="text-subtitle">Total: {{totalPrice | formatPrice}}</div>
+            <div class="text-subtitle">
+              Total: {{ totalPrice | formatPrice }}
+            </div>
           </q-card-section>
 
           <q-card-actions align="right">

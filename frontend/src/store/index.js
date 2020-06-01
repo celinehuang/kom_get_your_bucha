@@ -27,8 +27,8 @@ const Store = new Vuex.Store({
   state: {
     status: "",
     token: localStorage.getItem("token") || "",
-    currentUser: {},
-    userExists: false,
+    currentUser: null,
+    // change to map
     inCart: []
   },
   getters: {
@@ -44,7 +44,6 @@ const Store = new Vuex.Store({
       state.status = "success";
       state.token = authObj.token;
       state.currentUser = authObj.user;
-      state.userExists = true;
     },
     auth_error(state) {
       state.status = "error";
@@ -52,12 +51,10 @@ const Store = new Vuex.Store({
     logout(state) {
       state.status = "";
       state.token = "";
-      state.currentUser = {};
-      state.userExists = false;
+      state.currentUser = null;
     },
     set_user(state, user) {
       state.currentUser = user;
-      state.userExists = true;
     },
     add_to_cart(state, item) {
       state.inCart.push(item);

@@ -40,6 +40,7 @@ export default function(/* { store, ssrContext } */) {
   });
   Router.beforeEach((to, from, next) => {
     if (to.matched.some(record => record.meta.requiresAuth)) {
+      console.log(Store.state.currentUser);
       // this route requires auth, check if logged in
       // if not, redirect to login page.
       if (!Store.getters.isLoggedIn) {
@@ -47,15 +48,18 @@ export default function(/* { store, ssrContext } */) {
           path: "/login",
           query: { redirect: to.fullPath }
         });
-      } else if (Store.getters.isLoggedIn && !Store.state.userExists) {
+      } else if (Store.getters.isLoggedIn && Store.state.currentUser === null) {
         // get user with stored token
+        console.log("inside else if");
         const token = Store.state.token;
-        AXIOS.get("/api/rest-auth/user/", {
-          headers: {
-            Authorization: `Token ${token}`
-          }
-        })
+
+        const body = {
+          token: token
+        };
+
+        AXIOS.post("/auth/token", body)
           .then(resp => {
+            console.log("hello inside then");
             Store.commit("set_user", resp.data);
             next();
           })
@@ -74,7 +78,35 @@ export default function(/* { store, ssrContext } */) {
         next();
       }
     } else {
-      next(); // always call next()
+      if (Store.getters.isLoggedIn && Store.state.currentUser === null) {
+        // get user with stored token
+        console.log("inside else if");
+        const token = Store.state.token;
+
+        const body = {
+          token: token
+        };
+
+        AXIOS.post("/auth/token", body)
+          .then(resp => {
+            console.log("hello inside then");
+            Store.commit("set_user", resp.data);
+            next();
+          })
+          .catch(e => {
+            console.log(e);
+            // token is invalid
+            Store.dispatch("logout").then(
+              next({
+                path: "/login",
+                query: { redirect: to.fullPath }
+              })
+            );
+            next();
+          });
+      } else {
+        next();
+      }
     }
   });
 

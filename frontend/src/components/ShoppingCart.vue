@@ -50,7 +50,11 @@
 
           <q-card-actions align="right">
             <!-- add @click for redirect notification -->
-            <q-btn flat style="background=#f3e5cf;" to="/checkout"
+            <q-btn
+              flat
+              style="background=#f3e5cf;"
+              @click="showLoginNotif"
+              to="/checkout"
               >Checkout</q-btn
             >
           </q-card-actions>
@@ -100,6 +104,15 @@ export default {
     },
     log() {
       console.log(this.numItems);
+    },
+    showLoginNotif() {
+      this.$q.notify({
+        color: "red-3",
+        position: "top",
+        textColor: "white",
+        icon: "error",
+        message: "Please log in before preceeding to checkout"
+      });
     }
   }
 };

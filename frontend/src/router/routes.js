@@ -59,6 +59,12 @@ const routes = [
     path: "/checkout",
     meta: { requiresAuth: true },
     component: () => import("pages/Checkout.vue")
+  },
+  {
+    path: "/profile",
+    meta: { requiresAuth: true },
+    component: () => import("layouts/MainLayout.vue"),
+    children: [{ path: "", component: () => import("pages/UserProfile.vue") }]
   }
 ];
 

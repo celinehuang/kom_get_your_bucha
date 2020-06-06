@@ -3,6 +3,7 @@ import VueRouter from "vue-router";
 import routes from "./routes";
 import axios from "axios";
 import Store from "../store";
+import { Notify } from "quasar";
 
 Vue.use(VueRouter);
 
@@ -40,7 +41,6 @@ export default function(/* { store, ssrContext } */) {
   });
   Router.beforeEach((to, from, next) => {
     if (to.matched.some(record => record.meta.requiresAuth)) {
-      console.log(Store.state.currentUser);
       // this route requires auth, check if logged in
       // if not, redirect to login page.
       if (!Store.getters.isLoggedIn) {
@@ -48,9 +48,15 @@ export default function(/* { store, ssrContext } */) {
           path: "/login",
           query: { redirect: to.fullPath }
         });
+        Notify.create({
+          color: "red-3",
+          position: "top",
+          textColor: "white",
+          icon: "error",
+          message: "Please log in before preceeding to checkout"
+        });
       } else if (Store.getters.isLoggedIn && Store.state.currentUser === null) {
         // get user with stored token
-        console.log("inside else if");
         const token = Store.state.token;
 
         const body = {
@@ -59,7 +65,6 @@ export default function(/* { store, ssrContext } */) {
 
         AXIOS.post("/auth/token", body)
           .then(resp => {
-            console.log("hello inside then");
             Store.commit("set_user", resp.data);
             next();
           })
@@ -96,7 +101,7 @@ export default function(/* { store, ssrContext } */) {
             // token is invalid
             Store.dispatch("logout").then(
               next({
-                path: "/login",
+                path: "/home",
                 query: { redirect: to.fullPath }
               })
             );

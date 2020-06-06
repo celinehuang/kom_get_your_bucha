@@ -19,7 +19,7 @@
 
         <ShoppingCart />
 
-        <div v-if="currentUser === null">
+        <div v-if="currentUser === null || currentUser === undefined">
           <q-btn flat dense class="q-pa-sm" to="/login">LOG IN</q-btn>
         </div>
         <div v-else>
@@ -221,10 +221,7 @@ export default {
     };
   },
   methods: {
-    onSearch() {
-      console.log(this.user);
-      console.log(this.inCart);
-    },
+    onSearch() {},
     logout: function() {
       this.$store.dispatch("logout").then(this.$router.push({ path: "login" }));
     }

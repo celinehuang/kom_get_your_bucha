@@ -24,7 +24,9 @@
       <q-slide-transition>
         <div v-show="expanded">
           <q-separator />
-          <q-card-section class="text-subitle2">{{ description }}</q-card-section>
+          <q-card-section class="text-subitle2">{{
+            description
+          }}</q-card-section>
         </div>
       </q-slide-transition>
     </q-card>
@@ -39,10 +41,21 @@ export default {
       inCart: this.$store.state.inCart
     };
   },
-  props: ["item", "id", "description", "price", "photo", "title"],
+  props: {
+    item: Object,
+    id: Number,
+    description: String,
+    price: Number,
+    photo: String,
+    title: String
+  },
   methods: {
     addToCart(item) {
-      if (this.inCart.get(item) > item.inventory_count) {
+      var counts = {};
+      this.inCart.forEach(function(x) {
+        counts[x] = (counts[x] || 0) + 1;
+      });
+      if (counts[item] > item.inventory_count) {
         this.$q.notify({
           color: "red-4",
           position: "top",
@@ -53,7 +66,6 @@ export default {
       } else {
         this.$store.commit("add_to_cart", item);
       }
-      console.log(item);
     }
   },
   filters: {

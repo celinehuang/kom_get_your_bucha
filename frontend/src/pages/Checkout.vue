@@ -1,7 +1,10 @@
 <template>
   <q-layout>
+    <q-toolbar class="q-pa-md">
+      <q-btn icon="keyboard_arrow_left" flat label="Back to Home" to="/home" />
+    </q-toolbar>
     <div class="row items-start q-pa-lg">
-      <div class="col-7 q-pa-lg">
+      <div class="col-7 q-px-xl q-py-lg">
         <q-card class=" q-pa-lg">
           <q-card-section>
             <div class="text-h6">Review Order & Checkout</div>
@@ -83,18 +86,13 @@
             <q-list>
               <q-item
                 class="list-items"
-                v-for="item in inCart.keys()"
-                v-bind:key="item.id"
+                v-for="(item, index) in inCart"
+                v-bind:key="`${index}-${item.id}`"
               >
                 <q-item-section>
                   <q-avatar rounded>
                     <img v-bind:src="item.photo" />
                   </q-avatar>
-                </q-item-section>
-                <q-item-section>
-                  <q-item-label v-if="inCart.get(item) > 0">{{
-                    inCart.get(item)
-                  }}</q-item-label>
                 </q-item-section>
 
                 <q-item-section>
@@ -141,12 +139,10 @@ export default {
   },
   computed: {
     totalPrice() {
-      console.log("is this even called total price");
-      var tolPrice = 0;
-      this.inCart.forEach(function(value, key) {
-        tolPrice += value * key.price;
-      });
-      return tolPrice;
+      return this.inCart.reduce(
+        (acc, cur) => parseFloat(acc) + parseFloat(cur.price),
+        0
+      );
     }
   },
   methods: {

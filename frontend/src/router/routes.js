@@ -43,9 +43,9 @@ const routes = [
     children: [{ path: "", component: () => import("pages/Story.vue") }]
   },
   {
-    path: "/contact",
+    path: "/where",
     component: () => import("layouts/MainLayout.vue"),
-    children: [{ path: "", component: () => import("pages/Contact.vue") }]
+    children: [{ path: "", component: () => import("pages/WhereToBuy.vue") }]
   },
   {
     path: "/login",

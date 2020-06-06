@@ -26,10 +26,20 @@
           <q-btn-dropdown flat dense class="q-pa-sm" :label="`Hi, ${name}`">
             <q-list>
               <q-item>
-                <q-btn label="Log Out" class="full-width" flat @click="logout" />
+                <q-btn
+                  label="Log Out"
+                  class="full-width"
+                  flat
+                  @click="logout"
+                />
               </q-item>
               <q-item>
-                <q-btn label="View Profile" class="full-width" flat to="/profile" />
+                <q-btn
+                  label="View Profile"
+                  class="full-width"
+                  flat
+                  to="/profile"
+                />
               </q-item>
             </q-list>
           </q-btn-dropdown>
@@ -37,11 +47,18 @@
       </q-toolbar>
       <q-toolbar>
         <div class="center title-font text-weight-medium">
-          <q-btn style="font-size: 40px;" :ripple="false" to="/home">KOM GET YOUR BUCHA</q-btn>
+          <q-btn style="font-size: 40px;" :ripple="false" to="/home"
+            >KOM GET YOUR BUCHA</q-btn
+          >
         </div>
       </q-toolbar>
       <div class="center q-py-sm">
-        <q-btn-dropdown :ripple="false" flat label="SHOP ONLINE" style="font-size: 18px; width:30%">
+        <q-btn-dropdown
+          :ripple="false"
+          flat
+          label="SHOP ONLINE"
+          style="font-size: 18px; width:30%"
+        >
           <q-list>
             <q-item>
               <q-btn
@@ -49,7 +66,8 @@
                 flat
                 class="q-pt-sm full-width"
                 to="/classic-kombucha"
-              >Classic Flavours</q-btn>
+                >Classic Flavours</q-btn
+              >
             </q-item>
             <q-item>
               <q-btn
@@ -57,7 +75,8 @@
                 flat
                 class="q-pt-sm full-width"
                 to="/limited-edition"
-              >Limited Edition Flavours</q-btn>
+                >Limited Edition Flavours</q-btn
+              >
             </q-item>
             <q-item>
               <q-btn
@@ -65,33 +84,66 @@
                 flat
                 class="q-pt-sm full-width"
                 to="/alcoholic"
-              >Alcoholic Kombucha</q-btn>
+                >Alcoholic Kombucha</q-btn
+              >
             </q-item>
             <q-item>
-              <q-btn :ripple="false" flat class="q-pt-sm full-width" to="/equipment">Equipment</q-btn>
+              <q-btn
+                :ripple="false"
+                flat
+                class="q-pt-sm full-width"
+                to="/equipment"
+                >Equipment</q-btn
+              >
             </q-item>
             <q-item>
-              <q-btn :ripple="false" flat class="q-pt-sm full-width" to="/all-products">All Products</q-btn>
+              <q-btn
+                :ripple="false"
+                flat
+                class="q-pt-sm full-width"
+                to="/all-products"
+                >All Products</q-btn
+              >
             </q-item>
           </q-list>
         </q-btn-dropdown>
-        <q-btn :ripple="false" flat label="RECIPES" style="font-size:18px; width:30%" to="/recipes"></q-btn>
-        <q-btn-dropdown
+        <!-- <q-btn
+          :ripple="false"
+          flat
+          label="RECIPES"
+          style="font-size:18px; width:30%"
+          to="/recipes"
+        ></q-btn> -->
+        <q-btn
           :ripple="false"
           stretch
           flat
           label="ABOUT"
+          to="/story"
           style="font-size:18px; width:30%"
         >
-          <q-list>
+          <!-- <q-list>
             <q-item>
-              <q-btn :ripple="false" flat class="q-pt-sm full-width" to="/story">Story</q-btn>
-            </q-item>
-            <q-item>
-              <q-btn :ripple="false" flat class="q-pt-sm full-width" to="/contact">Contact</q-btn>
-            </q-item>
-          </q-list>
-        </q-btn-dropdown>
+              <q-btn
+                :ripple="false"
+                flat
+                style="font-size:18px; width:30%"
+                class="q-pt-sm full-width"
+                to="/story"
+                >Our Story</q-btn
+              >
+            </q-item> -->
+          <!-- <q-item>
+              <q-btn
+                :ripple="false"
+                flat
+                class="q-pt-sm full-width"
+                to="/contact"
+                >Contact</q-btn
+              >
+            </q-item> -->
+          <!-- </q-list> -->
+        </q-btn>
         <!-- <q-btn flat label="BLOG" style="font-size: 18px;"></q-btn> -->
       </div>
     </q-header>
@@ -109,7 +161,7 @@
           </div>
         </div>
         <div class="col-3">
-          <q-btn class="center" label="Where To Buy" />
+          <q-btn class="center" to="/where" label="Where To Buy" />
         </div>
         <div class="col-4 q-px-md">
           We are part of the organization Club Ultimate Féminin Montréal (CUFM)
@@ -119,13 +171,16 @@
               href="http://ultimatefemininmontreal.com/"
               style="color:#df8977"
               target="_blank"
-            >here</a>
-          </div>Follow them on Facebook
+              >here</a
+            >
+          </div>
+          Follow them on Facebook
           <a
             href="https://www.facebook.com/cuvmontreal"
             style="color:#df8977"
             target="_blank"
-          >here</a>
+            >here</a
+          >
         </div>
       </div>
       <div class="row">
@@ -158,8 +213,6 @@ export default {
     return {
       searchText: null,
       numItems: 0,
-
-      // username: this.$store.state.currentUser.username,
       name: this.$store.state.currentUser
         ? this.$store.state.currentUser.name
         : "",

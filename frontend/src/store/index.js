@@ -1,5 +1,6 @@
 import Vue from "vue";
 import Vuex from "vuex";
+import createPersistedState from "vuex-persistedstate";
 import axios from "axios";
 
 Vue.use(Vuex);
@@ -24,12 +25,12 @@ var AXIOS = axios.create({
  */
 
 const Store = new Vuex.Store({
+  // plugins: [createPersistedState()],
   state: {
     status: "",
     token: localStorage.getItem("token") || "",
     currentUser: null,
-    // change to map
-    inCart: []
+    inCart: new Map()
   },
   getters: {
     isLoggedIn: state => !!state.token,
@@ -57,13 +58,31 @@ const Store = new Vuex.Store({
       state.currentUser = user;
     },
     add_to_cart(state, item) {
-      state.inCart.push(item);
+      // create key-value pair if item is not already in the cart
+      if (!state.inCart.has(item)) {
+        state.inCart.set(item, 1);
+      } else {
+        var currQuantity = this.state.inCart.get(item);
+        // increment value if key is already in the cart
+        state.inCart.set(item, currQuantity + 1);
+      }
     },
-    remove_from_cart(state, index) {
-      state.inCart.splice(index, 1);
+    remove_from_cart(state, item) {
+      var currQuantity = this.state.inCart.get(item);
+      if (currQuantity == 1) {
+        // delete item in cart
+        currQuantity = 0;
+        console.log("before " + this.state.inCart.get(item));
+        this.state.inCart.delete(item);
+
+        console.log("before " + this.state.inCart.get(item));
+      } else {
+        // decrement quantity of item in cart
+        state.inCart.set(item, currQuantity - 1);
+      }
     },
     empty_cart(state) {
-      state.inCart = [];
+      state.inCart = {};
     }
   },
   actions: {
@@ -146,8 +165,8 @@ const Store = new Vuex.Store({
     addToCart({ commit }, item) {
       commit("add_to_cart", item);
     },
-    removeFromCart({ commit }, index) {
-      commit("remove_from_cart", index);
+    removeFromCart({ commit }, item) {
+      commit("remove_from_cart", item);
     },
     emptyCart({ commit }) {
       commit("empty_cart");

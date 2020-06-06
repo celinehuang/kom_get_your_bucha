@@ -1,55 +1,58 @@
 <template>
   <div class="cart">
     <q-btn flat icon="shopping_cart" @click="cartExpanded = true"
-      >( {{ inCart.length }} )</q-btn
+      >( {{ numItems }} )</q-btn
     >
-
     <q-dialog v-model="cartExpanded">
       <q-card class="cart-cards">
-        <q-toolbar style="background-color:primary">
+        <q-toolbar>
           <q-toolbar-title>Shopping Cart</q-toolbar-title>
-          <q-btn flat round dense icon="close" v-close-popup />
+          <q-btn flat round dense icon="close" @click="log" v-close-popup />
         </q-toolbar>
 
         <q-card-section>
-          <q-list style="min-width: 350px">
+          <q-list style="min-width: 500px">
             <q-item
               class="list-items"
-              v-for="(item, index) in inCart"
+              v-for="item in inCart.keys()"
               v-bind:key="item.id"
             >
               <q-item-section>
-                <!-- <q-avatar rounded>
+                <q-avatar rounded>
                   <img v-bind:src="item.photo" />
-                </q-avatar>-->
+                </q-avatar>
+              </q-item-section>
+              <q-item-section>
+                <q-item-label v-if="inCart.get(item) > 0">{{
+                  inCart.get(item)
+                }}</q-item-label>
               </q-item-section>
 
               <q-item-section>
                 <q-item-label lines="1">{{ item.title }}</q-item-label>
-                <!-- <q-item-label caption>{{item.artist}}</q-item-label> -->
               </q-item-section>
+
               <q-item-section>{{ item.price | formatPrice }}</q-item-section>
 
               <q-item-section>
-                <q-btn
-                  flat
-                  icon="delete"
-                  @click="removeFromCart(index)"
-                ></q-btn>
+                <q-btn flat icon="delete" @click="removeFromCart(item)"></q-btn>
               </q-item-section>
             </q-item>
           </q-list>
         </q-card-section>
 
-        <div v-if="inCart.length > 0">
+        <div v-if="inCart.size > 0">
           <q-card-section align="right">
             <div class="text-subtitle">
-              Total: {{ totalPrice | formatPrice }}
+              <!-- Total: {{ totalPrice | formatPrice }} -->
             </div>
           </q-card-section>
 
           <q-card-actions align="right">
-            <q-btn flat color="primary" to="/checkout">Checkout</q-btn>
+            <!-- add @click for redirect notification -->
+            <q-btn flat style="background=#f3e5cf;" to="/checkout"
+              >Checkout</q-btn
+            >
           </q-card-actions>
         </div>
       </q-card>
@@ -59,10 +62,12 @@
 
 <script>
 export default {
-  name: "shoppingCart",
+  name: "ShoppingCart",
   data() {
     return {
-      cartExpanded: false
+      cartExpanded: false,
+      inCart: this.$store.state.inCart
+      //   tolNumItems: 0
     };
   },
   filters: {
@@ -71,29 +76,39 @@ export default {
     }
   },
   computed: {
-    inCart() {
-      return this.$store.getters.inCart;
-    },
     totalPrice() {
-      return this.inCart.reduce(
-        (acc, cur) => parseFloat(acc) + parseFloat(cur.price),
-        0
-      );
+      console.log("is this even called total price");
+      var tolPrice = 0;
+      return this.inCart.forEach(item => {
+        tolPrice += this.item.price;
+        console.log("total price" + tolPrice);
+      });
+    },
+    numItems() {
+      console.log("numItems is called");
+      var tolNumItems = 0;
+      this.inCart.forEach(function(value, key) {
+        tolNumItems += value;
+      });
+
+      return tolNumItems;
     }
   },
   methods: {
-    removeFromCart(index) {
-      this.$store.dispatch("removeFromCart", index);
+    removeFromCart(item) {
+      this.$store.dispatch("removeFromCart", item);
+    },
+    log() {
+      console.log(this.numItems);
     }
   }
 };
 </script>
 
-<style lang="stylus">
+<style scoped>
 .cart-cards {
   padding: 10px;
 }
-
 .list-items {
   padding: 10px;
 }

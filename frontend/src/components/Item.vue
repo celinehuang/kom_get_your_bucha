@@ -7,12 +7,9 @@
 
       <q-card-section class="title-artist">
         <div class="text-h6">{{ title }}</div>
-        <!-- <div class="text-subtitle2">{{ artist }}</div> -->
       </q-card-section>
 
       <q-card-actions>
-        <!-- <q-btn flat color="primary" label="Buy Now" @click="addToCart(item)" to="/checkout" /> -->
-
         <q-btn
           round
           flat
@@ -38,13 +35,25 @@ export default {
   name: "Item",
   data() {
     return {
-      expanded: false
+      expanded: false,
+      inCart: this.$store.state.inCart
     };
   },
   props: ["item", "id", "description", "price", "photo", "title"],
   methods: {
     addToCart(item) {
-      this.$store.dispatch("addToCart", item);
+      if (this.inCart.get(item) > item.inventory_count) {
+        this.$q.notify({
+          color: "red-4",
+          position: "top",
+          textColor: "white",
+          icon: "error",
+          message: "Item cannot be add to cart, there is not enough in stock"
+        });
+      } else {
+        this.$store.commit("add_to_cart", item);
+      }
+      console.log(item);
     }
   },
   filters: {
@@ -54,17 +63,19 @@ export default {
   }
 };
 </script>
-<style lang="sass" scoped>
-.my-card
-  width: 100%
-  max-width: 350px
-.price-caption
-  position: absolute
-  bottom: 10px
-  left: 10px
-  background-color: black
-  border-radius: 5px
-  height: auto
-  width: auto
-  padding: 5px
+<style scoped>
+.my-card {
+  width: 100%;
+  max-width: 350px;
+}
+.price-caption {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  background-color: black;
+  border-radius: 5px;
+  height: auto;
+  width: auto;
+  padding: 5px;
+}
 </style>

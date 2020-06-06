@@ -54,6 +54,11 @@ const routes = [
   {
     path: "/admin",
     component: () => import("pages/admin/AdminLogin.vue")
+  },
+  {
+    path: "/checkout",
+    meta: { requiresAuth: true },
+    component: () => import("pages/Checkout.vue")
   }
 ];
 

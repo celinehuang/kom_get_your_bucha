@@ -37,7 +37,6 @@ export default {
           const data = response.data;
           this.items = [];
           Object.keys(data).forEach(key => {
-            console.log(data[key].item_type);
             if (data[key].inventory_count > 0) {
               this.items[key] = data[key];
             }

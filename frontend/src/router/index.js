@@ -80,7 +80,6 @@ export default function(/* { store, ssrContext } */) {
     } else {
       if (Store.getters.isLoggedIn && Store.state.currentUser === null) {
         // get user with stored token
-        console.log("inside else if");
         const token = Store.state.token;
 
         const body = {
@@ -89,7 +88,6 @@ export default function(/* { store, ssrContext } */) {
 
         AXIOS.post("/auth/token", body)
           .then(resp => {
-            console.log("hello inside then");
             Store.commit("set_user", resp.data);
             next();
           })

@@ -16,7 +16,9 @@
             </template>
           </q-input>
         </form>
+
         <ShoppingCart />
+
         <div v-if="currentUser === null">
           <q-btn flat dense class="q-pa-sm" to="/login">LOG IN</q-btn>
         </div>
@@ -24,20 +26,10 @@
           <q-btn-dropdown flat dense class="q-pa-sm" :label="`Hi, ${name}`">
             <q-list>
               <q-item>
-                <q-btn
-                  label="Log Out"
-                  class="full-width"
-                  flat
-                  @click="logout"
-                />
+                <q-btn label="Log Out" class="full-width" flat @click="logout" />
               </q-item>
               <q-item>
-                <q-btn
-                  label="View Profile"
-                  class="full-width"
-                  flat
-                  to="/profile"
-                />
+                <q-btn label="View Profile" class="full-width" flat to="/profile" />
               </q-item>
             </q-list>
           </q-btn-dropdown>
@@ -45,18 +37,11 @@
       </q-toolbar>
       <q-toolbar>
         <div class="center title-font text-weight-medium">
-          <q-btn style="font-size: 40px;" :ripple="false" to="/home"
-            >KOM GET YOUR BUCHA</q-btn
-          >
+          <q-btn style="font-size: 40px;" :ripple="false" to="/home">KOM GET YOUR BUCHA</q-btn>
         </div>
       </q-toolbar>
       <div class="center q-py-sm">
-        <q-btn-dropdown
-          :ripple="false"
-          flat
-          label="SHOP ONLINE"
-          style="font-size: 18px; width:30%"
-        >
+        <q-btn-dropdown :ripple="false" flat label="SHOP ONLINE" style="font-size: 18px; width:30%">
           <q-list>
             <q-item>
               <q-btn
@@ -64,8 +49,7 @@
                 flat
                 class="q-pt-sm full-width"
                 to="/classic-kombucha"
-                >Classic Flavours</q-btn
-              >
+              >Classic Flavours</q-btn>
             </q-item>
             <q-item>
               <q-btn
@@ -73,8 +57,7 @@
                 flat
                 class="q-pt-sm full-width"
                 to="/limited-edition"
-                >Limited Edition Flavours</q-btn
-              >
+              >Limited Edition Flavours</q-btn>
             </q-item>
             <q-item>
               <q-btn
@@ -82,36 +65,17 @@
                 flat
                 class="q-pt-sm full-width"
                 to="/alcoholic"
-                >Alcoholic Kombucha</q-btn
-              >
+              >Alcoholic Kombucha</q-btn>
             </q-item>
             <q-item>
-              <q-btn
-                :ripple="false"
-                flat
-                class="q-pt-sm full-width"
-                to="/equipment"
-                >Equipment</q-btn
-              >
+              <q-btn :ripple="false" flat class="q-pt-sm full-width" to="/equipment">Equipment</q-btn>
             </q-item>
             <q-item>
-              <q-btn
-                :ripple="false"
-                flat
-                class="q-pt-sm full-width"
-                to="/all-products"
-                >All Products</q-btn
-              >
+              <q-btn :ripple="false" flat class="q-pt-sm full-width" to="/all-products">All Products</q-btn>
             </q-item>
           </q-list>
         </q-btn-dropdown>
-        <q-btn
-          :ripple="false"
-          flat
-          label="RECIPES"
-          style="font-size:18px; width:30%"
-          to="/recipes"
-        ></q-btn>
+        <q-btn :ripple="false" flat label="RECIPES" style="font-size:18px; width:30%" to="/recipes"></q-btn>
         <q-btn-dropdown
           :ripple="false"
           stretch
@@ -121,18 +85,10 @@
         >
           <q-list>
             <q-item>
-              <q-btn :ripple="false" flat class="q-pt-sm full-width" to="/story"
-                >Story</q-btn
-              >
+              <q-btn :ripple="false" flat class="q-pt-sm full-width" to="/story">Story</q-btn>
             </q-item>
             <q-item>
-              <q-btn
-                :ripple="false"
-                flat
-                class="q-pt-sm full-width"
-                to="/contact"
-                >Contact</q-btn
-              >
+              <q-btn :ripple="false" flat class="q-pt-sm full-width" to="/contact">Contact</q-btn>
             </q-item>
           </q-list>
         </q-btn-dropdown>
@@ -163,16 +119,13 @@
               href="http://ultimatefemininmontreal.com/"
               style="color:#df8977"
               target="_blank"
-              >here</a
-            >
-          </div>
-          Follow them on Facebook
+            >here</a>
+          </div>Follow them on Facebook
           <a
             href="https://www.facebook.com/cuvmontreal"
             style="color:#df8977"
             target="_blank"
-            >here</a
-          >
+          >here</a>
         </div>
       </div>
       <div class="row">
@@ -205,19 +158,19 @@ export default {
     return {
       searchText: null,
       numItems: 0,
+
       // username: this.$store.state.currentUser.username,
       name: this.$store.state.currentUser
         ? this.$store.state.currentUser.name
         : "",
-      currentUser: this.$store.state.currentUser
+      currentUser: this.$store.state.currentUser,
+      inCart: this.$store.state.inCart
     };
   },
   methods: {
     onSearch() {
       console.log(this.user);
-    },
-    inCart() {
-      return this.$store.getters.inCart;
+      console.log(this.inCart);
     },
     logout: function() {
       this.$store.dispatch("logout").then(this.$router.push({ path: "login" }));

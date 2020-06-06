@@ -5,12 +5,14 @@ from flask_cors import CORS
 from flask_httpauth import HTTPTokenAuth
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate, MigrateCommand
+from flask_mail import Mail
 
 from config import config
 
 db = SQLAlchemy()
 migrate = Migrate()
 http_auth = HTTPTokenAuth("Bearer")
+mail = Mail()
 
 
 def create_app(config_name):
@@ -30,6 +32,9 @@ def create_app(config_name):
     # call init_app to complete initialization
     db.init_app(app)
     migrate.init_app(app, db)
+
+    # set up Flask Mail extension
+    mail.init_app(app)
 
     # create app blueprints
     from .main import main as main_blueprint

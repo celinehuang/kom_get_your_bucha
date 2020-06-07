@@ -2,6 +2,12 @@
   <q-layout>
     <div class="container">
       <div class="q-pa-md row justify-center items-start q-gutter-md">
+        <q-spinner
+          v-if="loading"
+          color="primary"
+          size="3em"
+          class="text-center"
+        />
         <Item
           style="margin: 10px"
           v-for="item in items"
@@ -23,7 +29,8 @@ import Item from "../components/Item.vue";
 export default {
   data() {
     return {
-      items: null
+      items: null,
+      loading: true
     };
   },
   components: {
@@ -42,6 +49,7 @@ export default {
             }
             this.items[key];
           });
+          this.loading = false;
         })
         .catch(e => {
           console.log(e);
@@ -51,6 +59,7 @@ export default {
             message: "Loading failed",
             icon: "report_problem"
           });
+          this.loading = false;
         });
     }
   },

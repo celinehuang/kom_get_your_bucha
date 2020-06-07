@@ -1,15 +1,15 @@
 <template>
   <div class="q-pa-md">
-    <!-- Change password section -->
+    <!-- Change account details section -->
     <div class="text-h6 q-mb-md">Change Password</div>
 
-    <q-form @submit="changePassword" class="q-gutter-sm">
+    <q-form @submit="changePassword" class="q-gutter-md q-ma-md">
       <q-input
         label="Old Password"
         v-model="oldPassword"
         filled
+        lazy-rules
         :type="isPwd ? 'password' : 'text'"
-        :rules="[val => !!val || 'Field is required']"
       >
         <template v-slot:append>
           <q-icon
@@ -23,8 +23,8 @@
         label="New Password"
         v-model="newPassword"
         filled
+        lazy-rules
         :type="isPwd1 ? 'password' : 'text'"
-        :rules="[val => !!val || 'Field is required']"
       >
         <template v-slot:append>
           <q-icon
@@ -38,11 +38,9 @@
         label="Confirm New Password"
         v-model="confirmNewPassword"
         filled
+        lazy-rules
         :type="isPwd2 ? 'password' : 'text'"
-        :rules="[
-          val => (val !== null && val !== '') || 'Please confirm your password',
-          val => val === newPassword || 'Passwords do not match'
-        ]"
+        :rules="[val => val === newPassword || 'Passwords do not match']"
       >
         <template v-slot:append>
           <q-icon
@@ -54,8 +52,19 @@
       </q-input>
 
       <div class="float-right">
-        <q-btn class="button q-ma-lg" to="/home" flat label="Cancel" />
-        <q-btn class="button" flat type="submit" label="Done" />
+        <q-spinner
+          v-if="submitting"
+          color="secondary"
+          size="2.5em"
+          class="q-mr-md"
+        />
+        <q-btn
+          class="button"
+          :disabled="submitting"
+          flat
+          type="submit"
+          label="Done"
+        />
       </div>
     </q-form>
   </div>

@@ -8,8 +8,19 @@
       <q-input filled v-model="name" label="Name" />
       <q-input filled v-model="shipping_addr" label="Address" />
       <div class="float-right">
-        <q-btn class="button q-ma-lg" to="/home" flat label="Cancel" />
-        <q-btn class="button" flat type="submit" label="Done" />
+        <q-spinner
+          v-if="submitting"
+          color="secondary"
+          size="2.5em"
+          class="q-mr-md"
+        />
+        <q-btn
+          class="button"
+          :disabled="submitting"
+          flat
+          type="submit"
+          label="Done"
+        />
       </div>
     </q-form>
   </div>

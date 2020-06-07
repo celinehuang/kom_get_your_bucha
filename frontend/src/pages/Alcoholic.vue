@@ -2,7 +2,14 @@
   <q-layout>
     <div class="container">
       <div class="q-pa-md row justify-center items-start q-gutter-md">
+        <q-spinner
+          v-if="loading"
+          color="primary"
+          size="3em"
+          class="text-center"
+        />
         <Item
+          v-else
           style="margin: 10px"
           v-for="item in items"
           v-bind:key="item.id"
@@ -23,7 +30,8 @@ import Item from "../components/Item.vue";
 export default {
   data() {
     return {
-      items: null
+      items: null,
+      loading: true
     };
   },
   components: {
@@ -42,9 +50,11 @@ export default {
             }
             this.items[key];
           });
+          this.loading = false;
         })
         .catch(e => {
           console.log(e);
+          this.loading = false;
           this.$q.notify({
             color: "negative",
             position: "top",

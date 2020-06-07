@@ -72,44 +72,6 @@ export default {
       selected: "Account",
       options: ["Account", "Password"]
     };
-  },
-  methods: {
-    changeProfile() {
-      const id = this.id;
-      const formData = new FormData();
-      if (this.picChanged == true) {
-        formData.append("profile_pic", this.newProfilePic);
-      }
-      formData.append("name", this.name);
-      formData.append("shipping_addr", this.shipping_addr);
-      formData.append("email", this.email);
-      this.$axios
-        .patch("/api/partialupdate/" + this.id + "/", formData, {
-          headers: {
-            "Content-Type": "multipart/form-data"
-          }
-        })
-        .then(resp => {
-          this.$q.notify({
-            color: "green-4",
-            position: "top",
-            textColor: "white",
-            icon: "cloud_done",
-            message: "Successfully Updated Profile"
-          });
-          this.$store.dispatch("refreshLoggedInUser");
-        })
-        .catch(err => {
-          this.$q.notify({
-            color: "red-4",
-            position: "top",
-            textColor: "white",
-            icon: "error",
-            message: "Something went wrong, please try again"
-          });
-        });
-    },
-    changePassword() {}
   }
 };
 </script>

@@ -20,8 +20,15 @@
               />
               <q-input
                 filled
+                v-model="email"
+                label="Email"
+                lazy-rules
+                :rules="[val => !!val || 'Field is required']"
+              />
+              <q-input
+                filled
                 v-model="shipping_addr"
-                label="Shipping Address"
+                label="Delivery Address"
                 lazy-rules
                 :rules="[val => !!val || 'Field is required']"
               />
@@ -122,10 +129,11 @@ export default {
   data() {
     return {
       inCart: this.$store.state.inCart,
-      name: null,
+      name: this.$store.state.currentUser.name,
+      email: this.$store.state.currentUser.email,
       cardName: null,
       billing_addr: null,
-      shipping_addr: this.shipping_addr,
+      shipping_addr: this.$store.state.currentUser.shipping_addr,
       cardNum: this.cardNum,
       expDate: this.expDate,
       cvc: this.cvc,

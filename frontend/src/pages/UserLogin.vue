@@ -9,7 +9,8 @@
           class="q-pb-lg"
           style="font-size: 30px; white-space: pre-wrap;"
           :ripple="false"
-        >KOM GET YOUR&#10;BUCHA</q-toolbar-title>
+          >KOM GET YOUR&#10;BUCHA</q-toolbar-title
+        >
       </div>
     </q-toolbar>
 
@@ -56,7 +57,12 @@
               />
 
               <div>
-                <q-btn label="Log In" type="submit" class="text-black" style="background:#f3e5cf;" />
+                <q-btn
+                  label="Log In"
+                  type="submit"
+                  class="text-black"
+                  style="background:#f3e5cf;"
+                />
               </div>
             </q-form>
           </q-tab-panel>
@@ -179,6 +185,7 @@ export default {
             icon: "cloud_done",
             message: "Registered successfully"
           });
+          // this.$store.dispatch("login", { email, password });
           this.$router.push({ path: "/home" }).catch(() => {});
         })
         .catch(_err => {

@@ -16,7 +16,7 @@ def get_all_users():
 
 # get user by ID
 @users.route("/<int:user_id>", methods=["GET"])
-# @http_auth.login_required
+@http_auth.login_required
 def get_user_by_id(user_id):
     user = User.query.filter_by(user_id=user_id).first()
     if user is None:
@@ -34,23 +34,37 @@ def get_user_by_email(email):
     return jsonify(user.serialize)
 
 
-# update a user's profile
-# TODO: allow users to change password
+# update a user's account details
 @users.route("/<int:user_id>/profile", methods=["PUT"])
-# @http_auth.login_required
-def update_user_settings(user_id):
+@http_auth.login_required
+def update_user_details(user_id):
+
     data = request.get_json(force=True)
 
-    try:
-        shipping_addr = int(data.get("shipping_addr"))
-    except TypeError:
-        shipping_addr = None
-
-    user = User.query.filter_by(id=user_id).first()
+    user = User.query.filter_by(user_id=user_id).first()
     if user is None:
         abort(404, "No user found with specified ID")
 
-    user.shipping_addr = shipping_addr
+    try:
+        shipping_addr = data.get("shipping_addr")
+    except TypeError:
+        shipping_addr = None
+
+    try:
+        name = data.get("name")
+    except TypeError:
+        name = None
+
+    if name is None and shipping_addr is None:
+        abort(400, "No values given to update")
+
+    if shipping_addr is not None:
+        user.shipping_addr = shipping_addr
+    elif name is not None:
+        user.name = name
+    else:
+        user.shipping_addr = shipping_addr
+        user.name = name
 
     db.session.add(user)
     db.session.commit()

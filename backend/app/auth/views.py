@@ -2,7 +2,7 @@ import datetime
 from flask import Flask, jsonify, request, abort, make_response
 from . import auth
 from .. import db, http_auth
-from app.models import User, Admin
+from app.models import User, Admin, verify_auth_token
 
 # log in an existing user
 @auth.route("/login", methods=["POST"])
@@ -37,7 +37,7 @@ def verify_token():
     data = request.get_json(force=True)
     token = data.get("token")
 
-    user = User.verify_auth_token(token)
+    user = verify_auth_token(token)
     if user is None:
         abort(404, "Token does not match any user")
 
@@ -68,7 +68,8 @@ def register():
     new_user = User(name=name, email=email, password=password)
     db.session.add(new_user)
     db.session.commit()
-    return jsonify(new_user.serialize)
+    token = new_user.generate_auth_token()
+    return jsonify({"user": new_user.serialize, "token": token.decode("ascii")})
 
 
 # register an admim
@@ -125,5 +126,28 @@ def admin_login():
 @auth.route("/logout")
 @http_auth.login_required
 def logout():
-    # TODO: maybe implement this?
     return "Logged out successfully", 200
+
+
+# update a user's password
+@auth.route("/<int:user_id>/password", methods=["POST"])
+# @http_auth.login_required
+def change_password(user_id):
+    """
+    Required in body:
+    old_password: String
+    new_password: String
+
+    """
+    user = User.query.filter_by(user_id=user_id).first()
+    if user is None:
+        abort(404, "No user found with specified ID")
+
+    data = request.get_json(force=True)
+    old_password = data.get("old_password")
+    new_password = data.get("new_password")
+
+    if user.change_password(old_password, new_password):
+        return "Password changed successfully", 200
+    else:
+        return "Failed to change password", 400

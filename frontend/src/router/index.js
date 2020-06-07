@@ -10,11 +10,13 @@ Vue.use(VueRouter);
 var config = require("../config");
 
 // Axios config
+const frontendUrl = config.build.host + ":" + config.build.port;
 const backendUrl = config.build.backendHost + ":" + config.build.backendPort;
 
 var AXIOS = axios.create({
   baseURL: backendUrl,
   headers: {
+    "Access-Control-Allow-Origin": frontendUrl,
     "Content-Type": "application/json"
   }
 });
@@ -53,7 +55,7 @@ export default function(/* { store, ssrContext } */) {
           position: "top",
           textColor: "white",
           icon: "error",
-          message: "Please log in before preceeding to checkout"
+          message: "Please log in before proceeding"
         });
       } else if (Store.getters.isLoggedIn && Store.state.currentUser === null) {
         // get user with stored token

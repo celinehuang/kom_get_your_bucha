@@ -11,7 +11,7 @@ from config import config
 
 db = SQLAlchemy()
 migrate = Migrate()
-http_auth = HTTPTokenAuth("Bearer")
+http_auth = HTTPTokenAuth(scheme="Bearer")
 mail = Mail()
 
 

@@ -7,6 +7,23 @@ from itsdangerous import BadSignature, SignatureExpired
 from werkzeug.security import generate_password_hash, check_password_hash
 
 
+@http_auth.verify_token
+def verify_auth_token(token):
+    s = Serializer(current_app.config["SECRET_KEY"])
+    try:
+        data = s.loads(token)
+    except SignatureExpired:
+        return False  # valid token, but expired
+    except BadSignature:
+        return False  # invalid token
+
+    user = User.query.get(data["token"])
+    if user is not None:
+        return user
+    else:
+        return Admin.query.get(data["token"])
+
+
 class User(db.Model):
     __tablename__ = "users"
     user_id = db.Column(db.Integer, primary_key=True)
@@ -26,28 +43,17 @@ class User(db.Model):
     def verify_password(self, password):
         return check_password_hash(self.password_hash, password)
 
+    def change_password(self, old_password, new_password):
+        if not self.verify_password(old_password):
+            return False
+        self.password = new_password
+        db.session.add(self)
+        db.session.commit()
+        return True
+
     def generate_auth_token(self, expiration=86400):
         s = Serializer(current_app.config["SECRET_KEY"], expiration)
         return s.dumps({"token": self.user_id})
-
-    @staticmethod
-    @http_auth.verify_token
-    def verify_auth_token(token):
-        s = Serializer(current_app.config["SECRET_KEY"])
-        try:
-            data = s.loads(token)
-        except SignatureExpired:
-            return False  # valid token, but expired
-        except BadSignature:
-            return False  # invalid token
-        return User.query.get(data["token"])
-
-    # @staticmethod
-    # def generate_test_user():
-    #     user = User(name="Albert Kragl", email="akragl@gmail.com", password="password")
-    #     db.session.add(user)
-    #     db.session.commit()
-    #     return user
 
     @property
     def serialize(self):
@@ -57,6 +63,7 @@ class User(db.Model):
             "name": self.name,
             "password_hash": self.password_hash,
             "email": self.email,
+            "shipping_addr": self.shipping_addr,
         }
 
     @staticmethod
@@ -91,18 +98,6 @@ class Admin(db.Model):
     def generate_auth_token(self, expiration=86400):
         s = Serializer(current_app.config["SECRET_KEY"], expiration)
         return s.dumps({"token": self.admin_id})
-
-    @staticmethod
-    @http_auth.verify_token
-    def verify_auth_token(token):
-        s = Serializer(current_app.config["SECRET_KEY"])
-        try:
-            data = s.loads(token)
-        except SignatureExpired:
-            return False  # valid token, but expired
-        except BadSignature:
-            return False  # invalid token
-        return Admin.query.get(data["token"])
 
     # @staticmethod
     # def generate_test_user():

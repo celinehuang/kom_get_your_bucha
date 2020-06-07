@@ -32,7 +32,7 @@ export default {
   methods: {
     getItems() {
       this.$axios
-        .get("http://localhost:5000/items/limited")
+        .get("/items/limited")
         .then(response => {
           const data = response.data;
           this.items = [];

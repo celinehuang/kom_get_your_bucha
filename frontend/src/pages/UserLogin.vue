@@ -185,7 +185,6 @@ export default {
             icon: "cloud_done",
             message: "Registered successfully"
           });
-          // this.$store.dispatch("login", { email, password });
           this.$router.push({ path: "/home" }).catch(() => {});
         })
         .catch(_err => {

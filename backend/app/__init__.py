@@ -27,6 +27,8 @@ def create_app(config_name):
         config_name = os.getenv("FLASK_CONFIG") or "default"
 
     app.config.from_object(config[config_name])
+    UPLOAD_FOLDER = "{}/items/item-images".format(app.root_path)
+    app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
     config[config_name].init_app(app)
 
     # call init_app to complete initialization

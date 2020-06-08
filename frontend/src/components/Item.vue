@@ -1,9 +1,18 @@
 <template>
   <div class="col-md-3 col-sm-6 col-xs-12">
     <q-card class="my-card">
-      <q-img v-bind:src="photo" :ratio="1">
-        <div class="price-caption">{{ price | formatPrice }}</div>
-      </q-img>
+      <div v-if="photo === null">
+        <q-img :ratio="1">
+          <img src="../assets/default-image.jpg" />
+          <div class="price-caption">{{ price | formatPrice }}</div>
+        </q-img>
+      </div>
+      <div v-else>
+        <q-img :ratio="1">
+          <img class="img" :src="'data:image/jpg;base64,' + photo" />
+          <div class="price-caption">{{ price | formatPrice }}</div>
+        </q-img>
+      </div>
 
       <q-card-section class="title-artist">
         <div class="text-h6">{{ title }}</div>
@@ -89,5 +98,10 @@ export default {
   height: auto;
   width: auto;
   padding: 5px;
+}
+.img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 </style>

@@ -97,9 +97,14 @@
                 v-bind:key="`${index}-${item.id}`"
               >
                 <q-item-section>
-                  <q-avatar rounded>
-                    <img v-bind:src="item.photo" />
+                  <q-avatar rounded v-if="item.photo === null">
+                    <img src="../assets/default-image.jpg" />
                   </q-avatar>
+                  <q-avatar rounded v-else>
+                    <img
+                      class="img"
+                      :src="'data:image/jpg;base64,' + item.photo"
+                  /></q-avatar>
                 </q-item-section>
 
                 <q-item-section>
@@ -175,59 +180,67 @@ export default {
       });
       return uniqueIds;
     },
-    checkout() {}
-    // checkout() {
-    //   var inCart = this.inCart;
-    //   var uniqueIds = this.getUniqueIds(inCart);
-    //   Object.keys(uniqueIds).forEach(id => {
-    //     var itemData = new FormData();
-    //     itemData.append(
-    //       "inventory_count",
-    //       uniqueIds[id].inventory_count - uniqueIds[id].numInCart
-    //     );
-    //     this.$axios
-    //       .patch("/api/items/" + id + "/", itemData, {
-    //         headers: {
-    //           "Content-Type": "multipart/form-data"
-    //         }
-    //       })
-    //       .catch(err => {
-    //         this.$q.notify({
-    //           color: "red-4",
-    //           position: "top",
-    //           textColor: "white",
-    //           icon: "error",
-    //           message: "Something went wrong, please try again"
-    //         });
-    //       });
-    //   });
-    //   for (var i = 0; i < inCart.length; i++) {
-    //     var purchaseData = new FormData();
-    //     purchaseData.append("username", this.userId);
-    //     purchaseData.append("iId", inCart[i].id);
-    //     purchaseData.append("shipping_addr", this.shipping_addr);
-    //     purchaseData.append("total_amt", inCart[i].price);
-    //     this.$axios
-    //       .post("/api/payments/", purchaseData, {
-    //         headers: {
-    //           "Content-Type": "multipart/form-data"
-    //         }
-    //       })
-    //       .catch(err => {
-    //         this.$q.notify({
-    //           color: "red-4",
-    //           position: "top",
-    //           textColor: "white",
-    //           icon: "error",
-    //           message: "Something went wrong, please try again"
-    //         });
-    //       });
-    //   }
-    //   this.emptyCart();
-    //   this.$router.push({ path: "/home" });
-    // }
+    checkout() {
+      var inCart = this.inCart;
+      var uniqueIds = this.getUniqueIds(inCart);
+      Object.keys(uniqueIds).forEach(id => {
+        const body = {
+          inventory_count:
+            uniqueIds[id].inventory_count - uniqueIds[id].numInCart
+        };
+        itemData.append(
+          "inventory_count",
+          uniqueIds[id].inventory_count - uniqueIds[id].numInCart
+        );
+        this.$axios
+          .put(`/items/${this.id}/update`, itemData, {
+            headers: {
+              "Content-Type": "multipart/form-data"
+            }
+          })
+          .catch(err => {
+            this.$q.notify({
+              color: "red-4",
+              position: "top",
+              textColor: "white",
+              icon: "error",
+              message: "Something went wrong, please try again"
+            });
+          });
+      });
+      for (var i = 0; i < inCart.length; i++) {
+        var purchaseData = new FormData();
+        purchaseData.append("username", this.userId);
+        purchaseData.append("iId", inCart[i].id);
+        purchaseData.append("shipping_addr", this.shipping_addr);
+        purchaseData.append("total_amt", inCart[i].price);
+        this.$axios
+          .post("/api/payments/", purchaseData, {
+            headers: {
+              "Content-Type": "multipart/form-data"
+            }
+          })
+          .catch(err => {
+            this.$q.notify({
+              color: "red-4",
+              position: "top",
+              textColor: "white",
+              icon: "error",
+              message: "Something went wrong, please try again"
+            });
+          });
+      }
+      this.emptyCart();
+      this.$router.push({ path: "/home" });
+    }
   }
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+</style>

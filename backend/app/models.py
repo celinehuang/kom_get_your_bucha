@@ -136,7 +136,7 @@ class Item(db.Model):
     # ingredient list
     description = db.Column(db.String(256), nullable=False)
     # default image should be added
-    photo = db.Column(db.LargeBinary)
+    photo = db.Column(db.String(256))
     # price in cents
     price = db.Column(db.Integer, nullable=False)
     date = db.Column(db.Date, nullable=False)
@@ -145,13 +145,20 @@ class Item(db.Model):
 
     @property
     def serialize(self):
+        encoded_photo = None
+        if self.photo is not None:
+            photo = open(self.photo.tobytes(), "rb")
+            encoded_photo = base64.b64encode(photo.read())
+
         """Return object data in serializeable format"""
         return {
             "id": self.item_id,
             "item_type": self.item_type,
             "title": self.title,
             "description": self.description,
-            "photo": self.photo,
+            "photo": encoded_photo.decode("utf-8")
+            if encoded_photo is not None
+            else None,
             "price": self.price,
             "date": self.date,
             "inventory_count": self.inventory_count,

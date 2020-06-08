@@ -18,9 +18,12 @@
               v-bind:key="`${index}-${item.id}`"
             >
               <q-item-section>
-                <q-avatar rounded>
-                  <img v-bind:src="item.photo" />
+                <q-avatar rounded v-if="item.photo === null">
+                  <img src="../assets/default-image.jpg" />
                 </q-avatar>
+                <q-avatar rounded v-else>
+                  <img class="img" :src="'data:image/jpg;base64,' + item.photo"
+                /></q-avatar>
               </q-item-section>
 
               <q-item-section>
@@ -96,5 +99,10 @@ export default {
 }
 .list-items {
   padding: 10px;
+}
+.img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 </style>

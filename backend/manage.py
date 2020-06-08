@@ -21,7 +21,6 @@ manager.add_option("-c", "--config", dest="config_name", required=False)
 
 
 # app = create_app(os.getenv("FLASK_CONFIG") or "default")
-# manager = Manager(app)
 # migrate = Migrate(app, db)
 
 

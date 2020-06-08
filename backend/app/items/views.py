@@ -1,15 +1,16 @@
 from datetime import datetime
 import os
-from flask import Flask, jsonify, request, abort, make_response, redirect
+from flask import Flask, jsonify, request, abort, make_response, redirect, current_app
+from werkzeug.datastructures import ImmutableMultiDict
 from werkzeug.utils import secure_filename
 from sqlalchemy import extract
 from . import items
 from .. import db, http_auth
 from app.models import User, Item, Payment, Admin
 
-UPLOAD_FOLDER = "./item-images"
+
 ALLOWED_EXTENSIONS = {"pdf", "png", "jpg", "jpeg", "gif"}
-# app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
+
 # app.config["MAX_CONTENT_LENGTH"] = 50 * 1024 * 1024
 
 # get all items
@@ -51,8 +52,6 @@ def create_item():
     title = data.get("title")
     description = data.get("description")
     item_type = data.get("item_type")
-    # email = data.get("email")
-    # photo = data.get("photo")
     admin_id = data.get("admin_id")
     inventory_count = int(data.get("inventory_count"))
     price = int(data.get("price"))
@@ -65,8 +64,6 @@ def create_item():
     if (
         title == ""
         or description == ""
-        # or email == ""
-        # or photo is None
         or item_type == ""
         or inventory_count == ""
         or price is None
@@ -97,39 +94,90 @@ def allowed_file(filename):
 @items.route("/<int:id>", methods=["DELETE"])
 # @http_auth.login_required
 def delete_item(id):
-    t = Item.query.filter_by(item_id=id).first()
-    if t is None:
+    item = Item.query.filter_by(item_id=id).first()
+    if item is None:
         abort(404, "No item found with specified ID")
 
-    db.session.delete(t)
+    db.session.delete(item)
     db.session.commit()
 
-    return jsonify(t.serialize)
+    return jsonify(item.serialize)
 
 
-# upload item image (called inside of the create_item POST request)
-@items.route("/upload-item-image", methods=["POST"])
+# get items by id
+@items.route("/<int:id>", methods=["GET"])
 # @http_auth.login_required
-def add_item_image():
-    if "file" not in request.files:
-        abort(400, "No file sent in request!")
+def get_item_by_id(id):
+    item = Item.query.filter_by(item_id=id).first()
+    if item is None:
+        abort(404, "No item found with specified ID")
 
-    file = request.files["file"]
-    if file and allowed_file(file.filename):
-        filename = secure_filename(file.filename)
-        file.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
-
-    file_path = "./item-images/{}".format(filename)
-    # # detect all objects in original image
-    # # returns a tuple: (OBJECT, FILE_PATH)
-    # detected_objects = detect_objects(file_path)
-
-    # object_tuples = []
-    f = open("./imagenew.jpg", "rb")
-    encoded_image = base64.b64encode(f.read())
-    return jsonify(encoded_image.decode("utf-8"))
+    return jsonify(item.serialize)
 
 
-# get items in cart
+# update an item by ID (admin only)
+@items.route("/<int:id>/update", methods=["PUT"])
+# @http_auth.login_required
+def update_item(id):
+    data = request.form.to_dict(flat=True)
+    title = data.get("title")
+    description = data.get("description")
+    item_type = data.get("item_type")
+    try:
+        photo = request.files["photo"]
+    except KeyError:
+        photo = None
+    # admin_id = data.get("admin_id")
+    inventory_count = data.get("inventory_count")
+    price = data.get("price")
+    date = datetime.now()
+
+    # admin = Admin.query.filter_by(admin_id=admin_id).first()
+    # if admin is None:
+    #     abort(404, "No admin found with specified ID")
+
+    item = Item.query.filter_by(item_id=id).first()
+    if item is None:
+        abort(400, "No item found with specified ID")
+
+    if title is not None:
+        item.title = title
+
+    if description is not None:
+        item.description = description
+
+    if item_type is not None:
+        item.item_type = item_type
+
+    if inventory_count is not None:
+        item.inventory_count = int(inventory_count)
+
+    if price is not None:
+        item.price = int(price)
+
+    if photo is not None:
+        if photo and allowed_file(photo.filename):
+            filename = secure_filename(photo.filename)
+            photo.save(os.path.join(current_app.config["UPLOAD_FOLDER"], filename))
+            file_path = "{}/{}".format(current_app.config["UPLOAD_FOLDER"], filename)
+            item.photo = file_path
+
+    if (
+        title == ""
+        and description == ""
+        and photo is None
+        and item_type == ""
+        and inventory_count == ""
+        and price is None
+        and date is None
+    ):
+        abort(400, "No fields to update")
+
+    item.date = date
+
+    db.session.add(item)
+    db.session.commit()
+    return jsonify(item.serialize)
+
 
 # get items in payment

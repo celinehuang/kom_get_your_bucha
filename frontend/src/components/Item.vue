@@ -33,9 +33,11 @@
       <q-slide-transition>
         <div v-show="expanded">
           <q-separator />
-          <q-card-section class="text-subitle2">{{
+          <q-card-section class="text-subitle2">
+            {{
             description
-          }}</q-card-section>
+            }}
+          </q-card-section>
         </div>
       </q-slide-transition>
     </q-card>
@@ -79,7 +81,12 @@ export default {
   },
   filters: {
     formatPrice: function(value) {
-      return "$" + (value / 100).toString();
+      return (
+        "$" +
+        parseFloat(value / 100)
+          .toFixed(2)
+          .toString()
+      );
     }
   }
 };

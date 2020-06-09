@@ -14,29 +14,17 @@
 
           <q-toolbar-title>
             <div class="title-font text-weight-medium">
-              <q-btn style="font-size: 30px;" :ripple="false" to="/admin-home"
-                >KOM GET YOUR BUCHA</q-btn
-              >
+              <q-btn style="font-size: 30px;" :ripple="false" to="/admin-home">KOM GET YOUR BUCHA</q-btn>
             </div>
           </q-toolbar-title>
           <div>
             <q-btn-dropdown flat dense class="q-pa-sm" :label="`Hi, ${name}`">
               <q-list>
                 <q-item>
-                  <q-btn
-                    label="Log Out"
-                    class="full-width"
-                    flat
-                    @click="logout"
-                  />
+                  <q-btn label="Log Out" class="full-width" flat @click="logout" />
                 </q-item>
                 <q-item>
-                  <q-btn
-                    label="View Profile"
-                    class="full-width"
-                    flat
-                    to="/admin-profile"
-                  />
+                  <q-btn label="View Profile" class="full-width" flat to="/admin-profile" />
                 </q-item>
               </q-list>
             </q-btn-dropdown>
@@ -75,21 +63,12 @@
           class="float-right q-mx-lg"
         >
           <template v-if="clearData" v-slot:append>
-            <q-icon
-              name="cancel"
-              @click.stop="clearData = null"
-              class="cursor-pointer"
-            />
+            <q-icon name="cancel" @click.stop="clearData = null" class="cursor-pointer" />
           </template>
         </q-select>
         <div class="container">
           <div class="q-pa-md row justify-center items-start q-gutter-md">
-            <q-spinner
-              v-if="loading"
-              color="primary"
-              size="3em"
-              class="text-center"
-            />
+            <q-spinner v-if="loading" color="primary" size="3em" class="text-center" />
             <EditItem
               v-else
               style="margin: 10px"

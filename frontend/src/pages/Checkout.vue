@@ -5,7 +5,7 @@
     </q-toolbar>
     <div class="row items-start q-pa-lg">
       <div class="col-7 q-px-xl q-py-lg">
-        <q-card class=" q-pa-lg">
+        <q-card class="q-pa-lg">
           <q-card-section>
             <div class="text-h6">Review Order & Checkout</div>
           </q-card-section>
@@ -77,12 +77,7 @@
               />
               <div>
                 <div class="float-right">
-                  <q-spinner
-                    v-if="submitting"
-                    color="secondary"
-                    size="2.5em"
-                    class="q-mr-md"
-                  />
+                  <q-spinner v-if="submitting" color="secondary" size="2.5em" class="q-mr-md" />
                   <q-btn
                     class="text-black float-right"
                     flat
@@ -111,10 +106,8 @@
                     <img src="../assets/default-image.jpg" />
                   </q-avatar>
                   <q-avatar rounded v-else>
-                    <img
-                      class="img"
-                      :src="'data:image/jpg;base64,' + item.photo"
-                  /></q-avatar>
+                    <img class="img" :src="'data:image/jpg;base64,' + item.photo" />
+                  </q-avatar>
                 </q-item-section>
 
                 <q-item-section>
@@ -123,11 +116,7 @@
                 <q-item-section>{{ item.price | formatPrice }}</q-item-section>
 
                 <q-item-section>
-                  <q-btn
-                    flat
-                    icon="delete"
-                    @click="removeFromCart(item)"
-                  ></q-btn>
+                  <q-btn flat icon="delete" @click="removeFromCart(item)"></q-btn>
                 </q-item-section>
               </q-item>
             </q-list>
@@ -158,7 +147,12 @@ export default {
   },
   filters: {
     formatPrice: function(value) {
-      return "$" + (value / 100).toString();
+      return (
+        "$" +
+        parseFloat(value / 100)
+          .toFixed(2)
+          .toString()
+      );
     }
   },
   computed: {

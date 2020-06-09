@@ -1,8 +1,6 @@
 <template>
   <div class="cart">
-    <q-btn flat icon="shopping_cart" @click="cartExpanded = true"
-      >( {{ inCart.length }} )</q-btn
-    >
+    <q-btn flat icon="shopping_cart" @click="cartExpanded = true">( {{ inCart.length }} )</q-btn>
     <q-dialog v-model="cartExpanded">
       <q-card class="cart-cards">
         <q-toolbar>
@@ -22,8 +20,8 @@
                   <img src="../assets/default-image.jpg" />
                 </q-avatar>
                 <q-avatar rounded v-else>
-                  <img class="img" :src="'data:image/jpg;base64,' + item.photo"
-                /></q-avatar>
+                  <img class="img" :src="'data:image/jpg;base64,' + item.photo" />
+                </q-avatar>
               </q-item-section>
 
               <q-item-section>
@@ -33,11 +31,7 @@
               <q-item-section>{{ item.price | formatPrice }}</q-item-section>
 
               <q-item-section>
-                <q-btn
-                  flat
-                  icon="delete"
-                  @click="removeFromCart(index)"
-                ></q-btn>
+                <q-btn flat icon="delete" @click="removeFromCart(index)"></q-btn>
               </q-item-section>
             </q-item>
           </q-list>
@@ -45,16 +39,12 @@
 
         <div v-if="inCart.length > 0">
           <q-card-section align="right">
-            <div class="text-subtitle">
-              Total: {{ totalPrice | formatPrice }}
-            </div>
+            <div class="text-subtitle">Total: {{ totalPrice | formatPrice }}</div>
           </q-card-section>
 
           <q-card-actions align="right">
             <!-- add @click for redirect notification -->
-            <q-btn flat style="background:#f3e5cf; color:black;" to="/checkout"
-              >Checkout</q-btn
-            >
+            <q-btn flat style="background:#f3e5cf; color:black;" to="/checkout">Checkout</q-btn>
           </q-card-actions>
         </div>
       </q-card>
@@ -74,7 +64,12 @@ export default {
   },
   filters: {
     formatPrice: function(value) {
-      return "$" + (value / 100).toString();
+      return (
+        "$" +
+        parseFloat(value / 100)
+          .toFixed(2)
+          .toString()
+      );
     }
   },
   computed: {

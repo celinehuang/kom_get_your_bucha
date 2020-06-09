@@ -56,6 +56,21 @@ const routes = [
     component: () => import("pages/admin/AdminLogin.vue")
   },
   {
+    path: "/admin-home",
+    meta: { requiresAuth: true },
+    component: () => import("pages/admin/AdminHome.vue")
+  },
+  {
+    path: "/admin-profile",
+    meta: { requiresAuth: true },
+    component: () => import("pages/UserProfile.vue")
+  },
+  {
+    path: "/all-users",
+    meta: { requiresAuth: true },
+    component: () => import("pages/admin/AllUsers.vue")
+  },
+  {
     path: "/checkout",
     meta: { requiresAuth: true },
     component: () => import("pages/Checkout.vue")

@@ -57,8 +57,15 @@
               />
 
               <div>
+                <q-spinner
+                  v-if="submitting"
+                  color="secondary"
+                  size="2.5em"
+                  class="q-mr-md"
+                />
                 <q-btn
                   label="Log In"
+                  :disabled="submitting"
                   type="submit"
                   class="text-black"
                   style="background:#f3e5cf;"
@@ -100,9 +107,16 @@
               />
 
               <div>
+                <q-spinner
+                  v-if="submitting"
+                  color="secondary"
+                  size="2.5em"
+                  class="q-mr-md"
+                />
                 <q-btn
                   label="Sign Up"
                   type="submit"
+                  :disabled="submitting"
                   class="text-black"
                   style="background:#f3e5cf;"
                 />
@@ -131,6 +145,7 @@ export default {
   name: "UserLogin",
   data() {
     return {
+      submitting: false,
       email: null,
       name: null,
       password: null,

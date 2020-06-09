@@ -9,7 +9,8 @@
           class="q-pb-lg"
           style="font-size: 30px; white-space: pre-wrap;"
           :ripple="false"
-        >KOM GET YOUR&#10;BUCHA</q-toolbar-title>
+          >KOM GET YOUR&#10;BUCHA</q-toolbar-title
+        >
       </div>
     </q-toolbar>
 
@@ -26,8 +27,8 @@
             label="Email"
             lazy-rules
             :rules="[
-                  val => (val && val.length > 0) || 'Please enter your email'
-                ]"
+              val => (val && val.length > 0) || 'Please enter your email'
+            ]"
           />
 
           <q-input
@@ -37,13 +38,25 @@
             type="password"
             lazy-rules
             :rules="[
-                  val =>
-                    (val !== null && val !== '') || 'Please enter your password'
-                ]"
+              val =>
+                (val !== null && val !== '') || 'Please enter your password'
+            ]"
           />
 
           <div>
-            <q-btn label="Log In" type="submit" class="text-black" style="background:#f3e5cf;" />
+            <q-spinner
+              v-if="submitting"
+              color="secondary"
+              size="2.5em"
+              class="q-mr-md"
+            />
+            <q-btn
+              label="Log In"
+              :disabled="submitting"
+              type="submit"
+              class="text-black"
+              style="background:#f3e5cf;"
+            />
           </div>
         </q-form>
       </q-card>
@@ -56,6 +69,7 @@ export default {
   name: "AdminLogin",
   data() {
     return {
+      submitting: false,
       email: null,
       password: null
     };
@@ -76,7 +90,7 @@ export default {
             message: "Logged in successfully"
           });
           this.submitting = false;
-          this.$router.push({ path: "/home" });
+          this.$router.push({ path: "/admin-home" });
         })
         .catch(_err => {
           console.log(_err);

@@ -9,8 +9,7 @@
           class="q-pb-lg"
           style="font-size: 30px; white-space: pre-wrap;"
           :ripple="false"
-          >KOM GET YOUR&#10;BUCHA</q-toolbar-title
-        >
+        >KOM GET YOUR&#10;BUCHA</q-toolbar-title>
       </div>
     </q-toolbar>
 
@@ -57,12 +56,6 @@
               />
 
               <div>
-                <q-spinner
-                  v-if="submitting"
-                  color="secondary"
-                  size="2.5em"
-                  class="q-mr-md"
-                />
                 <q-btn
                   label="Log In"
                   :disabled="submitting"
@@ -107,12 +100,6 @@
               />
 
               <div>
-                <q-spinner
-                  v-if="submitting"
-                  color="secondary"
-                  size="2.5em"
-                  class="q-mr-md"
-                />
                 <q-btn
                   label="Sign Up"
                   type="submit"

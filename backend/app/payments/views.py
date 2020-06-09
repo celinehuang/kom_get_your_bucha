@@ -30,9 +30,7 @@ def create_order():
 
     if (
         user_id is None
-        or iteem_id is None
-        # or email == ""
-        # or photo is None
+        or item_id is None
         or shipping_addr == ""
         or total_amt is None
         or pdate is None

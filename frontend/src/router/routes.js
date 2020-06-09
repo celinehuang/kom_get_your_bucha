@@ -65,6 +65,11 @@ const routes = [
     meta: { requiresAuth: true },
     component: () => import("layouts/MainLayout.vue"),
     children: [{ path: "", component: () => import("pages/UserProfile.vue") }]
+  },
+  {
+    path: "/order-confirmation",
+    meta: { requiresAuth: true },
+    component: () => import("pages/OrderConfirmation.vue")
   }
 ];
 

@@ -52,7 +52,7 @@
 
           <q-card-actions align="right">
             <!-- add @click for redirect notification -->
-            <q-btn flat style="background=#f3e5cf;" to="/checkout"
+            <q-btn flat style="background:#f3e5cf; color:black;" to="/checkout"
               >Checkout</q-btn
             >
           </q-card-actions>

@@ -9,7 +9,7 @@ from app.models import Admin
 
 # get all admins
 @admins.route("", methods=["GET"])
-# @http_auth.login_required
+@http_auth.login_required
 def get_all_admins():
     admins = Admin.query.all()
     return jsonify(Admin.serialize_list(admins))
@@ -17,7 +17,7 @@ def get_all_admins():
 
 # get admin by ID
 @admins.route("/<int:admin_id>", methods=["GET"])
-# @http_auth.login_required
+@http_auth.login_required
 def get_admin_by_id(admin_id):
     admin = Admin.query.filter_by(admin_id=admin_id).first()
     if admin is None:

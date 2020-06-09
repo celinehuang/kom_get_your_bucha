@@ -63,6 +63,7 @@
                   filled
                   v-model="cvc"
                   label="CVC"
+                  mask="###"
                   lazy-rules
                   :rules="[val => !!val || 'Field is required']"
                 />
@@ -75,13 +76,22 @@
                 :rules="[val => !!val || 'Field is required']"
               />
               <div>
-                <q-btn
-                  class="text-black float-right"
-                  flat
-                  style="background:#f3e5cf;"
-                  type="submit"
-                  label="Checkout"
-                />
+                <div class="float-right">
+                  <q-spinner
+                    v-if="submitting"
+                    color="secondary"
+                    size="2.5em"
+                    class="q-mr-md"
+                  />
+                  <q-btn
+                    class="text-black float-right"
+                    flat
+                    :disabled="submitting"
+                    style="background:#f3e5cf;"
+                    type="submit"
+                    label="Checkout"
+                  />
+                </div>
               </div>
             </q-form>
           </q-card-section>
@@ -133,6 +143,7 @@ export default {
   name: "Checkout",
   data() {
     return {
+      submitting: false,
       inCart: this.$store.state.inCart,
       name: this.$store.state.currentUser.name,
       email: this.$store.state.currentUser.email,
@@ -165,73 +176,47 @@ export default {
     emptyCart() {
       this.$store.dispatch("emptyCart");
     },
-    getUniqueIds(inCart) {
-      var uniqueIds = {};
-      Object.keys(inCart).forEach(key => {
-        var id = inCart[key].id;
-        var inventory_count = inCart[key].inventory_count;
-        if (!(id in uniqueIds)) {
-          uniqueIds[id] = {};
-          uniqueIds[id].numInCart = 1;
-          uniqueIds[id].inventory_count = inventory_count;
-        } else if (id in uniqueIds) {
-          uniqueIds[id].numInCart += 1;
-        }
-      });
-      return uniqueIds;
-    },
     checkout() {
+      const token = this.$store.state.token;
       var inCart = this.inCart;
-      var uniqueIds = this.getUniqueIds(inCart);
-      Object.keys(uniqueIds).forEach(id => {
-        const body = {
-          inventory_count:
-            uniqueIds[id].inventory_count - uniqueIds[id].numInCart
-        };
-        itemData.append(
-          "inventory_count",
-          uniqueIds[id].inventory_count - uniqueIds[id].numInCart
-        );
-        this.$axios
-          .put(`/items/${this.id}/update`, itemData, {
-            headers: {
-              "Content-Type": "multipart/form-data"
-            }
-          })
-          .catch(err => {
-            this.$q.notify({
-              color: "red-4",
-              position: "top",
-              textColor: "white",
-              icon: "error",
-              message: "Something went wrong, please try again"
-            });
+      var body = {
+        inCart
+      };
+      var emailBody = {
+        recipients: [this.email],
+        subject: "",
+        body: ""
+      };
+      this.submitting = true;
+      this.$axios
+        .put("/items/update-inventory", body, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        })
+        .then(resp => {
+          this.$q.notify({
+            color: "green-4",
+            position: "top",
+            textColor: "white",
+            icon: "cloud_done",
+            message: "Order placed successfully"
           });
-      });
-      for (var i = 0; i < inCart.length; i++) {
-        var purchaseData = new FormData();
-        purchaseData.append("username", this.userId);
-        purchaseData.append("iId", inCart[i].id);
-        purchaseData.append("shipping_addr", this.shipping_addr);
-        purchaseData.append("total_amt", inCart[i].price);
-        this.$axios
-          .post("/api/payments/", purchaseData, {
-            headers: {
-              "Content-Type": "multipart/form-data"
-            }
-          })
-          .catch(err => {
-            this.$q.notify({
-              color: "red-4",
-              position: "top",
-              textColor: "white",
-              icon: "error",
-              message: "Something went wrong, please try again"
-            });
+
+          this.$router.push({ path: "/order-confirmation" });
+          this.emptyCart();
+        })
+        .catch(err => {
+          this.$q.notify({
+            color: "red-4",
+            position: "top",
+            textColor: "white",
+            icon: "error",
+            message: "Something went wrong, please try again"
           });
-      }
-      this.emptyCart();
-      this.$router.push({ path: "/home" });
+        });
+
+      this.$axios.post("/send-email", emailBody).then(() => {});
     }
   }
 };

@@ -131,7 +131,7 @@ def logout():
 
 # update a user's password
 @auth.route("/<int:user_id>/password", methods=["POST"])
-# @http_auth.login_required
+@http_auth.login_required
 def change_password(user_id):
     """
     Required in body:

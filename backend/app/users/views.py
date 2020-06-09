@@ -8,7 +8,7 @@ from app.models import User
 
 # get all users
 @users.route("", methods=["GET"])
-# @http_auth.login_required
+@http_auth.login_required
 def get_all_users():
     users = User.query.all()
     return jsonify(User.serialize_list(users))
@@ -26,7 +26,7 @@ def get_user_by_id(user_id):
 
 # get user by email
 @users.route("/<email>", methods=["GET"])
-# @http_auth.login_required
+@http_auth.login_required
 def get_user_by_email(email):
     user = User.query.filter_by(email=email).first()
     if user is None:

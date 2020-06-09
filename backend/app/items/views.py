@@ -180,4 +180,28 @@ def update_item(id):
     return jsonify(item.serialize)
 
 
-# get items in payment
+# update inventory count for list of items
+@items.route("/update-inventory", methods=["PUT"])
+@http_auth.login_required
+def update_inventory():
+    data = request.get_json(force=True)
+    itemsInCart = data.get("inCart")
+
+    uniqueIds = {}
+
+    for item in itemsInCart:
+        id = item["id"]
+        inventory_count = item["inventory_count"]
+
+        if id not in uniqueIds:
+            uniqueIds[id] = 1
+        else:
+            uniqueIds[id] += 1
+
+    for id in uniqueIds:
+        item = Item.query.filter_by(item_id=id).first()
+        item.inventory_count = item.inventory_count - uniqueIds[id]
+
+    db.session.add(item)
+    db.session.commit()
+    return "Inventory updated successfully", 200

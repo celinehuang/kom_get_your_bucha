@@ -45,10 +45,11 @@ export default {
           this.items = [];
           Object.keys(data).forEach(key => {
             if (data[key].inventory_count > 0) {
-              this.items[key] = data[key];
+              this.items.push(data[key]);
             }
             this.items[key];
           });
+          console.log(this.items);
           this.loading = false;
         })
         .catch(e => {
